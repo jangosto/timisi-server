@@ -14,5 +14,7 @@ interface UserRepository
 
     public function findBy(UserCriteria $criteria): Users;
 
+    public function getRoles(): array;
+
 //    public function remove(User $user): void;
 }

@@ -3,3 +3,14 @@ controllers:
         path: ../src/Http/Controller/
         namespace: Infrastructure\Http\Controller
     type: attribute
+
+manager:
+    resource:
+        path: ../src/Http/Controller/Manager/
+        namespace: Infrastructure\Http\Controller\Manager
+    type: attribute
+    prefix: /manager
+
+manager_check_login:
+    path: /manager/check_login
+    methods: POST

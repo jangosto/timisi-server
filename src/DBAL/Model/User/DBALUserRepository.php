@@ -94,7 +94,10 @@ class DBALUserRepository implements UserRepository
             throw new UserNotFoundException();
         }
 
-        return $this->arrayToUser($userAsArray);
+        $user = $this->arrayToUser($userAsArray);
+        $user->roles = $this->getRolesByUserId($user->id);
+
+        return $user;
     }
 
     public function findBy(UserCriteria $criteria): Users
@@ -105,9 +108,41 @@ class DBALUserRepository implements UserRepository
 
         return new Users(
             array_map(
-                fn(array $userAsArray) => $this->arrayToUser($userAsArray),
+                function (array $userAsArray) {
+                    $user = $this->arrayToUser($userAsArray);
+                    $user->roles = $this->getRolesByUserId($user->id);
+                    return $user;
+                },
                 $usersAsArray
             ),
+        );
+    }
+
+    public function getRoles(): array
+    {
+        $roles = $this->connection->fetchAllAssociative(
+            'SELECT role FROM ' . $this->roleTableName,
+        );
+
+        return array_map(
+            fn(array $role) => $role['role'],
+            $roles
+        );
+    }
+
+    private function getRolesByUserId(string $userId): array
+    {
+        $roles = $this->connection->fetchAllAssociative(
+            'SELECT r.role '
+            .'FROM ' . $this->userRoleTableName . ' AS ur '
+            .'LEFT JOIN ' . $this->roleTableName . ' AS r ON r.id = ur.role_id '
+            .'WHERE ur.user_id = :user_id',
+            ['user_id' => $userId]
+        );
+
+        return array_map(
+            fn(array $role) => $role['role'],
+            $roles
         );
     }
 

@@ -6,8 +6,8 @@ namespace Domain\Model;
 
 class BaseModel extends BaseModelWithId
 {
-    public ?\DateTimeImmutable $createdAt;
-    public ?\DateTimeImmutable $updatedAt;
+    public ?\DateTimeImmutable $createdAt = null;
+    public ?\DateTimeImmutable $updatedAt = null;
     public ?\DateTimeImmutable $deletedAt = null;
 
     public function markAsUpdated(): self

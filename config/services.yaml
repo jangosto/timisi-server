@@ -9,11 +9,31 @@ parameters:
     jwt_passphrase: '%env(JWT_PASSPHRASE)%'
 
 services:
+
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            string $userTableName: 'user'
+            string $roleTableName: 'role'
+            string $userRoleTableName: 'user_role'
 
     Infrastructure\Http\Controller\:
         resource: '../src/Http/Controller/'
         tags: [ 'controller.service_arguments' ]
+
+    Infrastructure\Service\UserService:
+
+    Infrastructure\Security\Provider\UserProvider:
+    Infrastructure\Security\Handler\ManagerJwtFailureHandler:
+
+    ### REPOSITORIES ###
+    Infrastructure\DBAL\Model\User\DBALUserRepository:
+    Domain\Model\User\UserRepository:
+        alias: Infrastructure\DBAL\Model\User\DBALUserRepository
+
+    ### COMMANDS ###
+    Infrastructure\Command\CreateUserCommand:
+        tags:
+            - { name: 'console.command', command: 'app:create-user' }
