@@ -10,7 +10,3 @@ manager:
         namespace: Infrastructure\Http\Controller\Manager
     type: attribute
     prefix: /manager
-
-manager_check_login:
-    path: /manager/check_login
-    methods: POST

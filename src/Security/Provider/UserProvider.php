@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 readonly class UserProvider implements UserProviderInterface
 {
     public function __construct(
-        private UserRepository $userRepository
+        private readonly UserRepository $userRepository
     ) {}
 
     /**
