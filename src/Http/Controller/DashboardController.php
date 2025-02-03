@@ -1,6 +1,6 @@
 <?php
 
-namespace Infrastructure\Http\Controller\Manager;
+namespace Infrastructure\Http\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class DashboardController extends AbstractController
 {
-    #[Route('/manager', name: 'manager_dashboard')]
+    #[Route('dashboard', name: 'dashboard')]
     public function index(): Response
     {
         $this->denyAccessUnlessGranted('ROLE_MANAGER');

@@ -1,6 +1,6 @@
 <?php
 
-namespace Infrastructure\Http\Controller\Manager;
+namespace Infrastructure\Http\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,20 +10,26 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class LoginController extends AbstractController
 {
-    #[Route("/login", name: "manager_login")]
+    #[Route("/login", name: "login")]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        if ($this->getUser()) {
-            return $this->redirectToRoute('manager_dashboard'); // Evitar redirección infinita
-        }
+        #if ($this->getUser() && in_array('ROLE_MANAGER', $this->getUser()->getRoles(), true)) {
+        #    return $this->redirectToRoute('manager_dashboard'); // Evitar redirección infinita
+        #}
 
-        return $this->render('manager/login.html.twig', [
+        return $this->render('login.html.twig', [
             'last_username' => $authenticationUtils->getLastUsername(),
             'error' => $authenticationUtils->getLastAuthenticationError(),
         ]);
     }
 
-    #[Route('/manager/logout', name: 'manager_logout')]
+#    #[Route("/login_check", name: "manager_login_check", methods: ["POST"])]
+#    public function loginCheck(): void
+#    {
+#        throw new \LogicException('Este método nunca debería ejecutarse.');
+#    }
+
+    #[Route('/logout', name: 'logout')]
     public function logout(): void
     {
         // Symfony maneja la salida, este método nunca se ejecuta
