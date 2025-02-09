@@ -1,6 +1,6 @@
 <?php
 
-namespace Domain\Model\User;
+namespace Domain\Model\Session;
 
 use Domain\Model\Criteria;
 use Domain\Model\DateTimeInterval;

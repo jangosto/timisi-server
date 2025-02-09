@@ -2,8 +2,8 @@
 
 namespace Domain\Model\Session;
 
-use Domain\Model\User\SessionCriteria;
-use Domain\Model\User\Sessions;
+use Domain\Model\Session\SessionCriteria;
+use Domain\Model\Session\Sessions;
 
 interface SessionRepository
 {

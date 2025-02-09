@@ -1,6 +1,6 @@
 <?php
 
-namespace Domain\Model\User;
+namespace Domain\Model\Session;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
