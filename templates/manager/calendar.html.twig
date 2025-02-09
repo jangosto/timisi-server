@@ -1,0 +1,98 @@
+{% extends "manager/manager.html.twig" %}
+
+{% block title %}Calendario - {{ client_name }}{% endblock %}
+
+{% block section_content %}
+<div class="calendar-wrapper col-10 offset-1">
+    <h2>{{ month_name }} {{ year }}</h2>
+    <div class="calendar-grid">
+        <div>Lunes</div>
+        <div>Martes</div>
+        <div>Miércoles</div>
+        <div>Jueves</div>
+        <div>Viernes</div>
+        <div>Sábado</div>
+        <div>Domingo</div>
+        {% for day in calendar %}
+            <div class="calendar-day {{ day.class }}">
+                {% if day.date %}
+                    <div class="date-number">{{ day.date }}</div>
+                    <div class="events">
+                        {% for event in day.events %}
+                            <div class="event {{ event.type }}">
+                                <strong>{{ event.title }}</strong>
+                                <span>{{ event.start_time }} - {{ event.end_time }}</span>
+                                <span>{{ event.participant }}</span>
+                                {% if event.type == 'pilates' %}
+                                    <span>({{ event.participants }}/{{ event.max_participants }})</span>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <button class="add-event" onclick="openEventForm({{ day.date }})">+</button>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    function openEventForm(date) {
+        alert('Abrir formulario para el ' + date);
+    }
+</script>
+{% endblock %}
+
+{% block styles %}
+    {{ parent() }}
+    .calendar-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 5px;
+        padding: 10px;
+        width: 100%;
+        font-size: 24px;
+    }
+    .calendar-day {
+        background: white;
+        padding: 10px;
+        height: 230px;
+        border-radius: var(--border-radius);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        position: relative;
+        font-size: 20px;
+    }
+    .calendar-day.weekend {
+        background: #DDDDDD
+    }
+    .calendar-day .date-number {
+        font-weight: bold;
+    }
+    .event {
+        background: var(--accent-color);
+        color: white;
+        padding: 5px;
+        border-radius: 4px;
+        margin-top: 5px;
+        font-size: 0.9em;
+    }
+    .add-event {
+        font-size: 20px;
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+{% endblock %}

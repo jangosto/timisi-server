@@ -5,14 +5,12 @@ namespace Infrastructure\DBAL\Model\User;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
-use Domain\Model\City\City;
 use Domain\Model\User\User;
 use Domain\Model\User\UserCriteria;
 use Domain\Model\User\UserNotFoundException;
 use Domain\Model\User\UserRepository;
 use Domain\Model\User\Users;
 use Infrastructure\Service\UserService;
-use function Symfony\Component\Translation\t;
 
 class DBALUserRepository implements UserRepository
 {
@@ -65,6 +63,13 @@ class DBALUserRepository implements UserRepository
             );
 
         $this->setUserRoles($user->id, $user->roles);
+    }
+
+    public function remove(User $user): void
+    {
+        $user->setAsDeleted();
+
+        $this->update($user);
     }
 
     public function updatePassword(User $user, string $password): void

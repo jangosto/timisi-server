@@ -1,9 +1,14 @@
 security:
     password_hashers:
-        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+            algorithm: argon2id
+            time_cost: 4  # Incrementa la dificultad del cálculo
+            memory_cost: 65536  # 64 MB de memoria para mitigar ataques de hardware especializado
+
     providers:
         dbal_user_provider:
             id: Infrastructure\Security\Provider\UserProvider
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -16,6 +21,9 @@ security:
             form_login:
                 login_path: login
                 check_path: login
+            login_throttling:
+                max_attempts: 5
+                interval: '5 minutes'
 
         main:
             lazy: true
@@ -27,7 +35,7 @@ security:
                 target: /
 
     access_control:
-        - { path: ^/manager, roles: ROLE_MANAGER }
+        #- { path: ^/manager, roles: ROLE_MANAGER }
 
 
 when@test:
