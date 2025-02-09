@@ -20,4 +20,9 @@ class UserService
     {
         return $this->passwordHasher->hashPassword($user, $plainPassword);
     }
+
+    public function isPasswordValid(User $user, string $plainPassword): bool
+    {
+        return $this->passwordHasher->isPasswordValid($user, $plainPassword);
+    }
 }

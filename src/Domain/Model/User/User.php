@@ -14,6 +14,11 @@ class User extends BaseModel implements UserInterface, PasswordAuthenticatedUser
     public string $password;
     public array $roles = [];
 
+    public string $firstName;
+    public string $lastName;
+    public string $idNumber; // DNI
+    public \DateTimeImmutable $birthDate;
+
     public function getRoles(): array
     {
         return $this->roles;
