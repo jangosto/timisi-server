@@ -4,7 +4,7 @@ namespace Infrastructure\DBAL\Model\User;
 
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Query\QueryBuilder;
+use Doctrine\DBAL\Query\QueryBuilder;   
 use Domain\Model\User\User;
 use Domain\Model\User\UserCriteria;
 use Domain\Model\User\UserNotFoundException;
@@ -69,7 +69,11 @@ class DBALUserRepository implements UserRepository
     {
         $user->setAsDeleted();
 
-        $this->update($user);
+        $this->connection->update(
+            $this->userTableName,
+            ['deleted_at' => $user->deletedAt->format(self::DATE_TIME_FORMAT)],
+            ['id' => $user->id]
+        );
     }
 
     public function updatePassword(User $user, string $password): void
@@ -83,7 +87,7 @@ class DBALUserRepository implements UserRepository
                 $this->userTableName,
                 [
                     'password' => $user->password,
-                    'updated_at' => $user->updatedAt->format('Y-m-d H:i:s'),
+                    'updated_at' => $user->updatedAt->format(self::DATE_TIME_FORMAT),
                 ],
                 ['id' => $user->id]
             );
@@ -183,9 +187,9 @@ class DBALUserRepository implements UserRepository
         return [
             'username' => $user->username,
             'password' => $user->password,
-            'created_at' => $user->createdAt->format('Y-m-d H:i:s'),
-            'updated_at' => $user->updatedAt->format('Y-m-d H:i:s'),
-            'deleted_at' => $user->deletedAt ? $user->deletedAt->format('Y-m-d H:i:s') : null,
+            'created_at' => $user->createdAt->format(self::DATE_TIME_FORMAT),
+            'updated_at' => $user->updatedAt->format(self::DATE_TIME_FORMAT),
+            'deleted_at' => $user->deletedAt ? $user->deletedAt->format(self::DATE_TIME_FORMAT) : null,
         ];
     }
 
@@ -211,12 +215,12 @@ class DBALUserRepository implements UserRepository
             ->from($this->userTableName, 'c')
             ->where('c.deleted_at IS NULL');
 
-        $this->applyCityCriteriaFilters($criteria, $queryBuilder);
+        $this->applyUserCriteriaFilters($criteria, $queryBuilder);
 
         return $queryBuilder;
     }
 
-    private function applyCityCriteriaFilters(UserCriteria $criteria, QueryBuilder $queryBuilder): void
+    private function applyUserCriteriaFilters(UserCriteria $criteria, QueryBuilder $queryBuilder): void
     {
         if (!empty($criteria->getId())) {
             $queryBuilder->andWhere('c.id = :id')

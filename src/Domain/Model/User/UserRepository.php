@@ -2,7 +2,9 @@
 
 namespace Domain\Model\User;
 
-interface UserRepository
+use Domain\Model\BaseRepository;
+
+interface UserRepository extends BaseRepository
 {
     public function create(User $user): string;
 

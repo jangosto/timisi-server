@@ -4,24 +4,24 @@ namespace Domain\Model;
 
 class DateTimeInterval
 {
-    private ?\DateTimeImmutable $start;
-    private ?\DateTimeImmutable $end;
+    private ?\DateTimeImmutable $from;
+    private ?\DateTimeImmutable $to;
 
     public function __construct(
-        ?\DateTimeImmutable $start = null,
-        ?\DateTimeImmutable $end = null,
+        ?\DateTimeImmutable $from = null,
+        ?\DateTimeImmutable $to = null,
     ) {
-        $this->start = $start;
-        $this->end = $end;
+        $this->from = $from;
+        $this->to = $to;
     }
 
-    public function getStart(): ?\DateTimeImmutable
+    public function getFrom(): ?\DateTimeImmutable
     {
-        return $this->start;
+        return $this->from;
     }
 
-    public function getEnd(): ?\DateTimeImmutable
+    public function getTo(): ?\DateTimeImmutable
     {
-        return $this->end;
+        return $this->to;
     }
 }

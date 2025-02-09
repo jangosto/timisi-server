@@ -2,10 +2,11 @@
 
 namespace Domain\Model\Session;
 
+use Domain\Model\BaseRepository;
 use Domain\Model\Session\SessionCriteria;
 use Domain\Model\Session\Sessions;
 
-interface SessionRepository
+interface SessionRepository extends BaseRepository
 {
     public function create(Session $session): string;
 
