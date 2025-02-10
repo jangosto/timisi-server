@@ -2,7 +2,7 @@
 
 namespace Domain\Model;
 
-class DateTimeInterval
+class DateTimeRange
 {
     private ?\DateTimeImmutable $from;
     private ?\DateTimeImmutable $to;

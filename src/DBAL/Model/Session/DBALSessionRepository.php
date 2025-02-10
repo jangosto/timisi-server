@@ -269,5 +269,18 @@ class DBALSessionRepository implements SessionRepository
                     ->setParameter('end_datetime_to', $criteria->getEndDateTime()->getTo()->format(self::DATE_TIME_FORMAT));
             }
         }
+
+        if (!empty($criteria->getRoomId())) {
+            $queryBuilder->andWhere('s.room_id = :room_id')
+                ->setParameter('room_id', $criteria->getRoomId());
+        }
+
+        if (!empty($criteria->getProfessionalId())) {
+            $queryBuilder->join('s', $this->userSessionTableName, 'us', 's.id = us.session_id')
+                ->andWhere('us.user_id = :professional_id')
+                ->andWhere('us.category = :professional_category')
+                ->setParameter('professional_id', $criteria->getProfessionalId())
+                ->setParameter('professional_category', self::PROFESSIONAL_SESSION_CATEGORY_NAME);
+        }
     }
 }
