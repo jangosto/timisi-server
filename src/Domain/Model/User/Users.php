@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Domain\Model\User;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Domain\Model\Collection\Collection;
 
-class Users extends ArrayCollection
+class Users extends Collection
 {
 }

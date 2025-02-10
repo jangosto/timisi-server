@@ -8,6 +8,7 @@ use Domain\Model\BaseModelWithId;
 
 class User extends BaseModelWithId
 {
-    public string $name;
+    public string $firstName;
+    public string $lastName;
     public string $email;
 }

@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Domain\Model\Room;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Domain\Model\Collection\Collection;
 
-class Rooms extends ArrayCollection
+class Rooms extends Collection
 {
 }
