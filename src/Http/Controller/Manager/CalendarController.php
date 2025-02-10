@@ -50,7 +50,7 @@ class CalendarController extends AbstractController
             'section_name' => 'Calendario',
             'month_name' => 'Febrero',
             'year' => 2025,
-            'calendar' => CalendarService::getCalendarDataByMonth(3,2025),
+            'calendar' => CalendarService::getCalendarDataByMonth(),
         ];
         
 

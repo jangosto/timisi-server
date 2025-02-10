@@ -227,9 +227,9 @@ class DBALSessionRepository implements SessionRepository
         $queryBuilder = $this
             ->connection
             ->createQueryBuilder()
-            ->select('c.*')
-            ->from($this->sessionTableName, 'c')
-            ->where('c.deleted_at IS NULL');
+            ->select('s.*')
+            ->from($this->sessionTableName, 's')
+            ->where('s.deleted_at IS NULL');
 
         $this->applySessionCriteriaFilters($criteria, $queryBuilder);
 
@@ -239,33 +239,33 @@ class DBALSessionRepository implements SessionRepository
     private function applySessionCriteriaFilters(SessionCriteria $criteria, QueryBuilder $queryBuilder): void
     {
         if (!empty($criteria->getId())) {
-            $queryBuilder->andWhere('c.id = :id')
+            $queryBuilder->andWhere('s.id = :id')
                 ->setParameter('id', $criteria->getId());
         }
 
         if (!empty($criteria->getIds())) {
-            $queryBuilder->andWhere('c.id IN (:ids)')
+            $queryBuilder->andWhere('s.id IN (:ids)')
                 ->setParameter('ids', $criteria->getIds(), ArrayParameterType::INTEGER);
         }
 
         if (!empty($criteria->getStartDateTime())) {
             if (!empty($criteria->getStartDateTime()->getFrom())) {
-                $queryBuilder->andWhere('c.start_datetime >= :start_datetime_from')
+                $queryBuilder->andWhere('s.start_datetime >= :start_datetime_from')
                     ->setParameter('start_datetime_from', $criteria->getStartDateTime()->getFrom()->format(self::DATE_TIME_FORMAT));
             }
             if (!empty($criteria->getStartDateTime()->getTo())) {
-                $queryBuilder->andWhere('c.start_datetime >= :start_datetime_to')
+                $queryBuilder->andWhere('s.start_datetime <= :start_datetime_to')
                     ->setParameter('start_datetime_to', $criteria->getStartDateTime()->getTo()->format(self::DATE_TIME_FORMAT));
             }
         }
 
         if (!empty($criteria->getEndDateTime())) {
             if (!empty($criteria->getEndDateTime()->getFrom())) {
-                $queryBuilder->andWhere('c.end_datetime >= :end_datetime_from')
+                $queryBuilder->andWhere('s.end_datetime >= :end_datetime_from')
                     ->setParameter('end_datetime_from', $criteria->getEndDateTime()->getFrom()->format(self::DATE_TIME_FORMAT));
             }
             if (!empty($criteria->getEndDateTime()->getTo())) {
-                $queryBuilder->andWhere('c.end_datetime >= :end_datetime_to')
+                $queryBuilder->andWhere('s.end_datetime <= :end_datetime_to')
                     ->setParameter('end_datetime_to', $criteria->getEndDateTime()->getTo()->format(self::DATE_TIME_FORMAT));
             }
         }

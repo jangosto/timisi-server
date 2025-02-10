@@ -211,9 +211,9 @@ class DBALUserRepository implements UserRepository
         $queryBuilder = $this
             ->connection
             ->createQueryBuilder()
-            ->select('c.*')
-            ->from($this->userTableName, 'c')
-            ->where('c.deleted_at IS NULL');
+            ->select('u.*')
+            ->from($this->userTableName, 'u')
+            ->where('u.deleted_at IS NULL');
 
         $this->applyUserCriteriaFilters($criteria, $queryBuilder);
 
@@ -223,17 +223,17 @@ class DBALUserRepository implements UserRepository
     private function applyUserCriteriaFilters(UserCriteria $criteria, QueryBuilder $queryBuilder): void
     {
         if (!empty($criteria->getId())) {
-            $queryBuilder->andWhere('c.id = :id')
+            $queryBuilder->andWhere('u.id = :id')
                 ->setParameter('id', $criteria->getId());
         }
 
         if (!empty($criteria->getIds())) {
-            $queryBuilder->andWhere('c.id IN (:ids)')
+            $queryBuilder->andWhere('u.id IN (:ids)')
                 ->setParameter('ids', $criteria->getIds(), ArrayParameterType::INTEGER);
         }
 
         if (!empty($criteria->getUsername())) {
-            $queryBuilder->andWhere('c.username = :username')
+            $queryBuilder->andWhere('u.username = :username')
                 ->setParameter('username', $criteria->getUsername());
         }
     }

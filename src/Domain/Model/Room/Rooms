@@ -1,0 +1,9 @@
+<?php
+
+namespace Domain\Model\Room;
+
+use Doctrine\Common\Collections\ArrayCollection;
+
+class Rooms extends ArrayCollection
+{
+}
