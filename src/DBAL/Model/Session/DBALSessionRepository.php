@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Infrastructure\DBAL\Model\Session;
 
 use Doctrine\DBAL\ArrayParameterType;
@@ -20,7 +22,8 @@ class DBALSessionRepository implements SessionRepository
         private readonly Connection $connection,
         private readonly string $sessionTableName,
         private readonly string $userSessionTableName,
-    ) {}
+    ) {
+    }
 
     public function create(Session $session): string
     {
@@ -95,7 +98,7 @@ class DBALSessionRepository implements SessionRepository
                     $session = $this->arrayToSession($sessionAsArray);
                     $session->clientIds = $this->getClientIdsBySessionId($session->id);
                     $session->professionalIds = $this->getProfessionalIdsBySessionId($session->id);
-                    
+
                     return $session;
                 },
                 $sessionsAsArray
@@ -155,7 +158,7 @@ class DBALSessionRepository implements SessionRepository
             ->fetchAllAssociative();
 
         return array_map(
-            fn(array $clientId) => $clientId['user_id'],
+            fn (array $clientId) => $clientId['user_id'],
             $clientIds
         );
     }
@@ -174,7 +177,7 @@ class DBALSessionRepository implements SessionRepository
             ->fetchAllAssociative();
 
         return array_map(
-            fn(array $professionalId) => $professionalId['user_id'],
+            fn (array $professionalId) => $professionalId['user_id'],
             $professionalIds
         );
     }
@@ -188,7 +191,7 @@ class DBALSessionRepository implements SessionRepository
             'price_with_vat' => $session->priceWithVat,
             'vat_percentage' => $session->vatPercentage,
             'category' => $session->category,
-            "capacity" => $session->capacity,
+            'capacity' => $session->capacity,
             'created_at' => $session->createdAt->format(self::DATE_TIME_FORMAT),
             'updated_at' => $session->updatedAt->format(self::DATE_TIME_FORMAT),
             'deleted_at' => $session->deletedAt ? $session->deletedAt->format(self::DATE_TIME_FORMAT) : null,

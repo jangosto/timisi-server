@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Infrastructure\DBAL\Model\User;
 
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Query\QueryBuilder;   
+use Doctrine\DBAL\Query\QueryBuilder;
 use Domain\Model\User\User;
 use Domain\Model\User\UserCriteria;
 use Domain\Model\User\UserNotFoundException;
@@ -20,7 +22,8 @@ class DBALUserRepository implements UserRepository
         private readonly string $roleTableName,
         private readonly string $userRoleTableName,
         private readonly UserService $userService,
-    ) {}
+    ) {
+    }
 
     public function create(User $user): string
     {
@@ -120,6 +123,7 @@ class DBALUserRepository implements UserRepository
                 function (array $userAsArray) {
                     $user = $this->arrayToUser($userAsArray);
                     $user->roles = $this->getRolesByUserId($user->id);
+
                     return $user;
                 },
                 $usersAsArray
@@ -134,7 +138,7 @@ class DBALUserRepository implements UserRepository
         );
 
         return array_map(
-            fn(array $role) => $role['role'],
+            fn (array $role) => $role['role'],
             $roles
         );
     }
@@ -143,14 +147,14 @@ class DBALUserRepository implements UserRepository
     {
         $roles = $this->connection->fetchAllAssociative(
             'SELECT r.role '
-            .'FROM ' . $this->userRoleTableName . ' AS ur '
-            .'LEFT JOIN ' . $this->roleTableName . ' AS r ON r.id = ur.role_id '
-            .'WHERE ur.user_id = :user_id',
+            . 'FROM ' . $this->userRoleTableName . ' AS ur '
+            . 'LEFT JOIN ' . $this->roleTableName . ' AS r ON r.id = ur.role_id '
+            . 'WHERE ur.user_id = :user_id',
             ['user_id' => $userId]
         );
 
         return array_map(
-            fn(array $role) => $role['role'],
+            fn (array $role) => $role['role'],
             $roles
         );
     }

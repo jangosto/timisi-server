@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DBAL\Model\Room;
 
 use Doctrine\DBAL\ArrayParameterType;
@@ -7,9 +9,8 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Domain\Model\Room\Room;
 use Domain\Model\Room\RoomCriteria;
-use Domain\Model\Room\RoomRepository;
-use Domain\Model\ObjectNotFoundException;
 use Domain\Model\Room\RoomNotFoundException;
+use Domain\Model\Room\RoomRepository;
 use Domain\Model\Room\Rooms;
 
 class DBALRoomRepository implements RoomRepository
@@ -17,7 +18,8 @@ class DBALRoomRepository implements RoomRepository
     public function __construct(
         private readonly Connection $connection,
         private readonly string $roomTableName,
-    ) {}
+    ) {
+    }
 
     public function create(Room $room): string
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Infrastructure\Command;
 
 use Domain\Model\User\User;
@@ -38,7 +40,7 @@ class CreateUserCommand extends Command
                 new Email(),
             ]);
 
-            if (count($errors) > 0) {
+            if (\count($errors) > 0) {
                 $io->error('Por favor, introduce un email válido.');
             } else {
                 break;
@@ -56,7 +58,7 @@ class CreateUserCommand extends Command
             $io->writeln('Roles disponibles:');
 
             foreach ($roles as $index => $role) {
-                $io->writeln(sprintf('  [%d] %s', $index + 1, $role));
+                $io->writeln(\sprintf('  [%d] %s', $index + 1, $role));
             }
 
             $roleIndex = $io->ask('Elige un rol para añadir al usuario (deja en blanco para finalizar)', null);
@@ -81,7 +83,7 @@ class CreateUserCommand extends Command
 
         $this->userRepository->create($user);
 
-        $io->success(sprintf('Usuario %s creado con éxito.', $email));
+        $io->success(\sprintf('Usuario %s creado con éxito.', $email));
 
         return Command::SUCCESS;
     }

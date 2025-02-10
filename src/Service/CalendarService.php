@@ -1,24 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Infrastructure\Service;
 
 class CalendarService
 {
     public static function getCalendarDataByMonth(
-        int $month = null,
-        int $year = null,
+        ?int $month = null,
+        ?int $year = null,
     ): array {
-        if ($month === null) {
-            $month = (int)date('n');
+        if (null === $month) {
+            $month = (int) date('n');
         }
 
-        if ($year === null) {
-            $year = (int)date('Y');
+        if (null === $year) {
+            $year = (int) date('Y');
         }
 
         $dateWalker = \DateTime::createFromFormat(
-            "Y-n-j",
-            sprintf("%d-%d-%d", $year, $month, 1)
+            'Y-n-j',
+            \sprintf('%d-%d-%d', $year, $month, 1)
         );
 
         $weekDayNumber = 1;
@@ -28,12 +30,12 @@ class CalendarService
 
             if (
                 !$paintingDays
-                && \strval($weekDayNumber) === $dateWalker->format("N")
+                && \strval($weekDayNumber) === $dateWalker->format('N')
             ) {
                 $paintingDays = true;
             }
 
-            if ($paintingDays) { 
+            if ($paintingDays) {
                 $dayData = [
                     'date' => $dateWalker->format('j'),
                     'class' => 'day',
@@ -49,7 +51,7 @@ class CalendarService
             if ($weekDayNumber >= 7) {
                 $weekDayNumber = 1;
             } else {
-                $weekDayNumber++;
+                ++$weekDayNumber;
             }
 
             $calendar[] = $dayData;
@@ -60,7 +62,7 @@ class CalendarService
                 'date' => null,
                 'class' => 'empty' . ($weekDayNumber >= 6 ? ' weekend' : ''),
             ];
-            $weekDayNumber++;
+            ++$weekDayNumber;
         }
 
         return $calendar;

@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Domain\Model\Session;
 
 use Domain\Model\Criteria;
-use Domain\Model\DateTimeInterval;
 use Domain\Model\DateTimeRange;
 
 class SessionCriteria extends Criteria

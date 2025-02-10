@@ -1,10 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Domain\Model\Session;
 
 use Domain\Model\BaseRepository;
-use Domain\Model\Session\SessionCriteria;
-use Domain\Model\Session\Sessions;
 
 interface SessionRepository extends BaseRepository
 {

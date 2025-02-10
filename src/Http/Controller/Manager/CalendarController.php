@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Infrastructure\Http\Controller\Manager;
 
 use Infrastructure\Service\CalendarService;
@@ -52,7 +54,6 @@ class CalendarController extends AbstractController
             'year' => 2025,
             'calendar' => CalendarService::getCalendarDataByMonth(),
         ];
-        
 
         return $this->render('manager/calendar.html.twig', $calendarData);
     }
