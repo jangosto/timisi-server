@@ -15,13 +15,11 @@ use Domain\Model\Session\Sessions;
 
 class DBALSessionRepository implements SessionRepository
 {
-    private const CLIENT_SESSION_CATEGORY_NAME = 'client';
-    private const PROFESSIONAL_SESSION_CATEGORY_NAME = 'professional';
-
     public function __construct(
         private readonly Connection $connection,
         private readonly string $sessionTableName,
-        private readonly string $userSessionTableName,
+        private readonly string $professionalSessionTableName,
+        private readonly string $clientSessionTableName,
     ) {
     }
 
@@ -109,18 +107,17 @@ class DBALSessionRepository implements SessionRepository
     private function setSessionClients(string $sessionId, array $clientIds): void
     {
         $this->connection->delete(
-            $this->userSessionTableName,
-            ['session_id' => $sessionId, 'category' => self::CLIENT_SESSION_CATEGORY_NAME]
+            $this->clientSessionTableName,
+            ['session_id' => $sessionId]
         );
 
         foreach ($clientIds as $clientId) {
             $this->connection->insert(
-                $this->userSessionTableName,
-                $this->userSessionToArray(
+                $this->clientSessionTableName,
+                [
                     $clientId,
                     $sessionId,
-                    self::CLIENT_SESSION_CATEGORY_NAME
-                )
+                ]
             );
         }
     }
@@ -128,18 +125,17 @@ class DBALSessionRepository implements SessionRepository
     private function setSessionProfessionals(string $sessionId, array $professionalIds): void
     {
         $this->connection->delete(
-            $this->userSessionTableName,
-            ['session_id' => $sessionId, 'category' => self::PROFESSIONAL_SESSION_CATEGORY_NAME]
+            $this->professionalSessionTableName,
+            ['session_id' => $sessionId]
         );
 
         foreach ($professionalIds as $professionalId) {
             $this->connection->insert(
-                $this->userSessionTableName,
-                $this->userSessionToArray(
+                $this->professionalSessionTableName,
+                [
                     $professionalId,
                     $sessionId,
-                    self::PROFESSIONAL_SESSION_CATEGORY_NAME
-                )
+                ]
             );
         }
     }
@@ -149,12 +145,10 @@ class DBALSessionRepository implements SessionRepository
         $clientIds = $this
             ->connection
             ->createQueryBuilder()
-            ->select('us.user_id')
-            ->from($this->userSessionTableName, 'us')
-            ->where('us.session_id = :session_id')
-            ->andWhere('us.category = :category')
+            ->select('cs.user_id')
+            ->from($this->clientSessionTableName, 'cs')
+            ->where('cs.session_id = :session_id')
             ->setParameter('session_id', $sessionId)
-            ->setParameter('category', self::CLIENT_SESSION_CATEGORY_NAME)
             ->fetchAllAssociative();
 
         return array_map(
@@ -168,12 +162,10 @@ class DBALSessionRepository implements SessionRepository
         $professionalIds = $this
             ->connection
             ->createQueryBuilder()
-            ->select('us.user_id')
-            ->from($this->userSessionTableName, 'us')
-            ->where('us.session_id = :session_id')
-            ->andWhere('us.category = :category')
+            ->select('ps.user_id')
+            ->from($this->professionalSessionTableName, 'ps')
+            ->where('ps.session_id = :session_id')
             ->setParameter('session_id', $sessionId)
-            ->setParameter('category', self::PROFESSIONAL_SESSION_CATEGORY_NAME)
             ->fetchAllAssociative();
 
         return array_map(
@@ -211,18 +203,6 @@ class DBALSessionRepository implements SessionRepository
         $session->deletedAt = $data['deleted_at'] ? new \DateTimeImmutable($data['deleted_at']) : null;
 
         return $session;
-    }
-
-    private function userSessionToArray(
-        string $userId,
-        string $sessionId,
-        string $category,
-    ): array {
-        return [
-            'user_id' => $userId,
-            'session_id' => $sessionId,
-            'category' => $category,
-        ];
     }
 
     private function createQueryBuilderBySessionCriteria(SessionCriteria $criteria): QueryBuilder
@@ -279,11 +259,9 @@ class DBALSessionRepository implements SessionRepository
         }
 
         if (!empty($criteria->getProfessionalId())) {
-            $queryBuilder->join('s', $this->userSessionTableName, 'us', 's.id = us.session_id')
-                ->andWhere('us.user_id = :professional_id')
-                ->andWhere('us.category = :professional_category')
-                ->setParameter('professional_id', $criteria->getProfessionalId())
-                ->setParameter('professional_category', self::PROFESSIONAL_SESSION_CATEGORY_NAME);
+            $queryBuilder->leftJoin('s', $this->professionalSessionTableName, 'ps', 's.id = ps.session_id')
+                ->andWhere('ps.user_id = :professional_id')
+                ->setParameter('professional_id', $criteria->getProfessionalId());
         }
     }
 }
