@@ -49,7 +49,7 @@ final class Version20250107CreateUserAndRoleTables extends AbstractMigration
         $this->addSql("INSERT INTO `role` (`name`, `role`) VALUES
             ('Administrator', 'ROLE_ADMIN'),
             ('User', 'ROLE_USER'),
-            ('manager', 'ROLE_MANAGER'),
+            ('Manager', 'ROLE_MANAGER'),
             ('Super Administrator', 'ROLE_SUPER_ADMIN')");
     }
 

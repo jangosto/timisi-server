@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DBAL\Model\Room;
+namespace Infrastructure\DBAL\Model\Room;
 
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
