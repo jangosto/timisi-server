@@ -1,3 +1,0 @@
-doctrine_fixtures:
-    paths:
-        - '%kernel.project_dir%/fixtures'

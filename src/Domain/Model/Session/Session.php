@@ -28,7 +28,5 @@ class Session extends BaseModel
     {
         $this->clients = new Users();
         $this->professionals = new Users();
-
-        parent::__construct();
     }
 }

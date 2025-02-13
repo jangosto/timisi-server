@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Service\Hydrator\Session;
 
-use Domain\Model\Collection\Collection;
+use Domain\Model\Collection;
 use Domain\Model\HydrationCriteria;
 use Domain\Model\Room\RoomCriteria;
 use Domain\Model\Room\RoomRepository;

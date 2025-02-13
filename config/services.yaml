@@ -9,7 +9,6 @@ parameters:
     jwt_passphrase: '%env(JWT_PASSPHRASE)%'
 
 services:
-
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
@@ -18,6 +17,10 @@ services:
             string $userTableName: 'user'
             string $roleTableName: 'role'
             string $userRoleTableName: 'user_role'
+            string $sessionTableName: 'session'
+            string $professionalSessionTableName: 'professional_session'
+            string $clientSessionTableName: 'client_session'
+            string $roomTableName: 'room'
 
     Infrastructure\Http\Controller\:
         resource: '../src/Http/Controller/'
@@ -33,7 +36,19 @@ services:
     Domain\Model\User\UserRepository:
         alias: Infrastructure\DBAL\Model\User\DBALUserRepository
 
+    Infrastructure\DBAL\Model\Session\DBALSessionRepository:
+    Domain\Model\Session\SessionRepository:
+        alias: Infrastructure\DBAL\Model\Session\DBALSessionRepository
+
+    Infrastructure\DBAL\Model\Room\DBALRoomRepository:
+    Domain\Model\Room\RoomRepository:
+        alias: Infrastructure\DBAL\Model\Room\DBALRoomRepository
+
     ### COMMANDS ###
     Infrastructure\Command\CreateUserCommand:
         tags:
             - { name: 'console.command', command: 'app:create-user' }
+
+    Infrastructure\Command\InsertFixturesDataCommand:
+        tags:
+            - { name: 'console.command', command: 'app:insert-fixtures-data' }

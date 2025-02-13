@@ -191,6 +191,9 @@ class DBALUserRepository implements UserRepository
         return [
             'username' => $user->username,
             'password' => $user->password,
+            'first_name' => $user->firstName,
+            'last_name' => $user->lastName,
+            'id_number' => $user->idNumber,
             'created_at' => $user->createdAt->format(self::DATE_TIME_FORMAT),
             'updated_at' => $user->updatedAt->format(self::DATE_TIME_FORMAT),
             'deleted_at' => $user->deletedAt ? $user->deletedAt->format(self::DATE_TIME_FORMAT) : null,
@@ -203,6 +206,9 @@ class DBALUserRepository implements UserRepository
         $user->id = $data['id'];
         $user->username = $data['username'];
         $user->password = $data['password'];
+        $user->firstName = $data['first_name'];
+        $user->lastName = $data['last_name'];
+        $user->idNumber = $data['id_number'];
         $user->createdAt = new \DateTimeImmutable($data['created_at']);
         $user->updatedAt = new \DateTimeImmutable($data['updated_at']);
         $user->deletedAt = $data['deleted_at'] ? new \DateTimeImmutable($data['deleted_at']) : null;
