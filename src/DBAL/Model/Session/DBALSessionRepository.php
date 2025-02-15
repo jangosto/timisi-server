@@ -25,6 +25,8 @@ class DBALSessionRepository implements SessionRepository
 
     public function create(Session $session): string
     {
+        $session->markAsUpdated();
+
         $this->connection->insert(
             $this->sessionTableName,
             $this->sessionToArray($session)
@@ -115,8 +117,8 @@ class DBALSessionRepository implements SessionRepository
             $this->connection->insert(
                 $this->clientSessionTableName,
                 [
-                    $clientId,
-                    $sessionId,
+                    'user_id' => $clientId,
+                    'session_id' => $sessionId,
                 ]
             );
         }
@@ -133,8 +135,8 @@ class DBALSessionRepository implements SessionRepository
             $this->connection->insert(
                 $this->professionalSessionTableName,
                 [
-                    $professionalId,
-                    $sessionId,
+                    'user_id' => $professionalId,
+                    'session_id' => $sessionId,
                 ]
             );
         }

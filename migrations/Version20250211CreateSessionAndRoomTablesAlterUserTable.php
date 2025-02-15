@@ -47,8 +47,8 @@ final class Version20250211CreateSessionAndRoomTablesAlterUserTable extends Abst
             `user_id` BIGINT UNSIGNED NOT NULL,
             `session_id` BIGINT UNSIGNED NOT NULL,
             PRIMARY KEY (`user_id`, `session_id`),
-            FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON DELETE CASCADE,
-            FOREIGN KEY (`session_id`) REFERENCES `session`(`id`) ON DELETE CASCADE
+            FOREIGN KEY (`user_id`) REFERENCES `user`(`id`),
+            FOREIGN KEY (`session_id`) REFERENCES `session`(`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
 
         // Create `professional_session` table
@@ -56,8 +56,8 @@ final class Version20250211CreateSessionAndRoomTablesAlterUserTable extends Abst
             `user_id` BIGINT UNSIGNED NOT NULL,
             `session_id` BIGINT UNSIGNED NOT NULL,
             PRIMARY KEY (`user_id`, `session_id`),
-            FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON DELETE CASCADE,
-            FOREIGN KEY (`session_id`) REFERENCES `session`(`id`) ON DELETE CASCADE
+            FOREIGN KEY (`user_id`) REFERENCES `user`(`id`),
+            FOREIGN KEY (`session_id`) REFERENCES `session`(`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
 
         // Modify `user` table to add new fields
