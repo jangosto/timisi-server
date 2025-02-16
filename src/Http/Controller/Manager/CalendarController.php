@@ -4,16 +4,31 @@ declare(strict_types=1);
 
 namespace Infrastructure\Http\Controller\Manager;
 
+use Domain\Model\DateTimeRange;
+use Domain\Model\Session\SessionCriteria;
+use Domain\Query\GetSessionsQuery;
+use Infrastructure\Http\QueryBusController;
 use Infrastructure\Service\CalendarService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-class CalendarController extends AbstractController
+class CalendarController extends QueryBusController
 {
     #[Route('/manager/calendar', name: 'calendar')]
     public function index(): Response
     {
+        $sessions = $this->ask(
+            new GetSessionsQuery(
+                SessionCriteria::createEmpty()
+                    ->filterByStartDateTime(
+                        new DateTimeRange(
+                            new \DateTimeImmutable('2025-02-01 00:00:00'),
+                            new \DateTimeImmutable('2025-02-28 23:59:59'),
+                        ),
+                    ),
+            ),
+        );
+
         $calendarData = [
             'client_name' => 'Bambú Fisioterapia',
             'logo_url' => 'https://www.bambufisioterapia.com/wp-content/uploads/2018/01/bambufisioterapia_logo-e1516723053345.png',

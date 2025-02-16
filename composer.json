@@ -11,6 +11,7 @@
         "doctrine/dbal": "*",
         "doctrine/doctrine-bundle": "*",
         "doctrine/doctrine-migrations-bundle": "^3.3",
+        "league/tactician-bundle": "^1.5",
         "symfony/console": "7.2.*",
         "symfony/dotenv": "7.2.*",
         "symfony/expression-language": "7.2.*",

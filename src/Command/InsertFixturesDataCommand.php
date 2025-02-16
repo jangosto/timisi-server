@@ -122,8 +122,8 @@ class InsertFixturesDataCommand extends Command
                 $physiotherapySession->roomId = 0 === rand(0, 1) ? $therapyRoom1Id : $therapyRoom2Id;
 
                 // Assign random manager and user
-                $physiotherapySession->professionalIds = [array_rand($managerIds, 1)];
-                $physiotherapySession->clientIds = [array_rand($userIds, 1)];
+                $physiotherapySession->professionalIds = [$managerIds[array_rand($managerIds, 1)]];
+                $physiotherapySession->clientIds = [$userIds[array_rand($userIds, 1)]];
 
                 $this->sessionRepository->create($physiotherapySession);
             }
@@ -146,10 +146,13 @@ class InsertFixturesDataCommand extends Command
                 $pilatesSession->roomId = $multiPurposeRoomId;
 
                 // Add one random manager
-                $pilatesSession->professionalIds = [array_rand($managerIds, 1)];
+                $pilatesSession->professionalIds = [$managerIds[array_rand($managerIds, 1)]];
 
                 // Add 9 random clients
-                $pilatesSession->clientIds = array_rand($userIds, 9);
+                $pilatesSession->clientIds = array_map(
+                    fn ($key) => $userIds[$key],
+                    array_rand($userIds, 9)
+                );
 
                 $this->sessionRepository->create($pilatesSession);
             }
@@ -165,14 +168,24 @@ class InsertFixturesDataCommand extends Command
             $workshopSession->roomId = $multiPurposeRoomId;
 
             // Add both managers
-            $workshopSession->professionalIds = $managerIds;
+            $workshopSession->professionalIds = array_map(
+                fn ($key) => $userIds[$key],
+                array_rand($managerIds, 2)
+            );
 
             // Add 15 random clients
-            $workshopSession->clientIds = array_rand($userIds, 15);
+            $workshopSession->clientIds = array_map(
+                fn ($key) => $userIds[$key],
+                array_rand($userIds, 15)
+            );
 
             $this->sessionRepository->create($workshopSession);
+
+            return Command::SUCCESS;
         } catch (\Throwable $e) {
-            $io->error('An error occurred while inserting test data: ' . $e->getMessage() . PHP_EOL . $e->getTraceAsString());
+            $io->error('An error occurred while inserting test data: '
+                . $e->getMessage() . PHP_EOL
+                . $e->getFile() . ':' . $e->getLine());
 
             return Command::FAILURE;
         }

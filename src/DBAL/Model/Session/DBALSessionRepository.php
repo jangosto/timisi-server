@@ -117,8 +117,8 @@ class DBALSessionRepository implements SessionRepository
             $this->connection->insert(
                 $this->clientSessionTableName,
                 [
-                    'user_id' => $clientId,
-                    'session_id' => $sessionId,
+                    'user_id' => \intval($clientId),
+                    'session_id' => \intval($sessionId),
                 ]
             );
         }
@@ -135,8 +135,8 @@ class DBALSessionRepository implements SessionRepository
             $this->connection->insert(
                 $this->professionalSessionTableName,
                 [
-                    'user_id' => $professionalId,
-                    'session_id' => $sessionId,
+                    'user_id' => \intval($professionalId),
+                    'session_id' => \intval($sessionId),
                 ]
             );
         }

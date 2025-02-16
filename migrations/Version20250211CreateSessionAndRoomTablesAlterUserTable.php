@@ -64,7 +64,8 @@ final class Version20250211CreateSessionAndRoomTablesAlterUserTable extends Abst
         $this->addSql('ALTER TABLE `user`
             ADD COLUMN `first_name` VARCHAR(255) NOT NULL,
             ADD COLUMN `last_name` VARCHAR(255) NOT NULL,
-            ADD COLUMN `id_number` VARCHAR(50) NOT NULL');
+            ADD COLUMN `id_number` VARCHAR(50) NOT NULL,
+            ADD CONSTRAINT `unique_id_number` UNIQUE (`id_number`)');
     }
 
     public function down(Schema $schema): void
