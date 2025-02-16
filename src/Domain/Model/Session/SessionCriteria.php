@@ -16,14 +16,14 @@ class SessionCriteria extends Criteria
 
     public function filterByStartDateTime(DateTimeRange $startDateTime): self
     {
-        $this->$startDateTime = $startDateTime;
+        $this->startDateTime = $startDateTime;
 
         return $this;
     }
 
     public function filterByEndDateTime(DateTimeRange $endDateTime): self
     {
-        $this->$endDateTime = $endDateTime;
+        $this->endDateTime = $endDateTime;
 
         return $this;
     }

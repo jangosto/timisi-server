@@ -179,13 +179,13 @@ class DBALSessionRepository implements SessionRepository
     private function sessionToArray(Session $session): array
     {
         return [
-            'id' => $session->id,
+            'id' => \intval($session->id),
             'start_datetime' => $session->startDateTime->format(self::DATE_TIME_FORMAT),
             'end_datetime' => $session->endDateTime->format(self::DATE_TIME_FORMAT),
-            'price_with_vat' => $session->priceWithVat,
-            'vat_percentage' => $session->vatPercentage,
-            'category' => $session->category,
-            'capacity' => $session->capacity,
+            'price_with_vat' => \floatval($session->priceWithVat),
+            'vat_percentage' => \floatval($session->vatPercentage),
+            'category' => \strval($session->category),
+            'capacity' => \intval($session->capacity),
             'created_at' => $session->createdAt->format(self::DATE_TIME_FORMAT),
             'updated_at' => $session->updatedAt->format(self::DATE_TIME_FORMAT),
             'deleted_at' => $session->deletedAt ? $session->deletedAt->format(self::DATE_TIME_FORMAT) : null,
@@ -195,11 +195,13 @@ class DBALSessionRepository implements SessionRepository
     private function arrayToSession(array $data): Session
     {
         $session = new Session();
-        $session->id = $data['id'];
-        $session->priceWithVat = $data['price_with_vat'];
-        $session->vatPercentage = $data['vat_percentage'];
-        $session->category = $data['category'];
-        $session->capacity = $data['capacity'];
+        $session->id = \strval($data['id']);
+        $session->startDateTime = new \DateTimeImmutable($data['start_datetime']);
+        $session->endDateTime = new \DateTimeImmutable($data['end_datetime']);
+        $session->priceWithVat = \floatval($data['price_with_vat']);
+        $session->vatPercentage = \floatval($data['vat_percentage']);
+        $session->category = \strval($data['category']);
+        $session->capacity = \intval($data['capacity']);
         $session->createdAt = new \DateTimeImmutable($data['created_at']);
         $session->updatedAt = new \DateTimeImmutable($data['updated_at']);
         $session->deletedAt = $data['deleted_at'] ? new \DateTimeImmutable($data['deleted_at']) : null;

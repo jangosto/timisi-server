@@ -52,3 +52,15 @@ services:
     Infrastructure\Command\InsertFixturesDataCommand:
         tags:
             - { name: 'console.command', command: 'app:insert-fixtures-data' }
+
+    ### COMMAND AND QUERY HANDLERS ###
+#    Domain\CommandHandler\:
+#        resource: '../src/Domain/CommandHandler/*'
+#        tags:
+#            - { name: "tactician.handler", typehints: true }
+
+    Domain\QueryHandler\:
+        resource: '../src/Domain/QueryHandler/'
+        tags:
+            - { name: "tactician.handler", typehints: true }
+

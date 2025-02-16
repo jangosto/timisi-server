@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Infrastructure\Service;
 
+use Domain\Model\Session\Sessions;
+
 class CalendarService
 {
     public static function getCalendarDataByMonth(
         ?int $month = null,
         ?int $year = null,
+        ?Sessions $sessions = null,
     ): array {
         if (null === $month) {
             $month = (int) date('n');
@@ -39,7 +42,10 @@ class CalendarService
                 $dayData = [
                     'date' => $dateWalker->format('j'),
                     'class' => 'day',
-                    'events' => [],
+                    'events' => array_filter(
+                        $sessions->toArray(),
+                        fn ($session) => $session->startDateTime->format('Y-m-d') === $dateWalker->format('Y-m-d')
+                    ),
                 ];
                 $dateWalker->modify('+1 day');
             }

@@ -67,7 +67,9 @@ class CalendarController extends QueryBusController
             'section_name' => 'Calendario',
             'month_name' => 'Febrero',
             'year' => 2025,
-            'calendar' => CalendarService::getCalendarDataByMonth(),
+            'calendar' => CalendarService::getCalendarDataByMonth(
+                sessions: $sessions,
+            ),
         ];
 
         return $this->render('manager/calendar.html.twig', $calendarData);

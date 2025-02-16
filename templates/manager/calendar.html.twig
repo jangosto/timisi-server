@@ -19,12 +19,12 @@
                     <div class="date-number">{{ day.date }}</div>
                     <div class="events">
                         {% for event in day.events %}
-                            <div class="event {{ event.type }}">
-                                <strong>{{ event.title }}</strong>
-                                <span>{{ event.start_time }} - {{ event.end_time }}</span>
-                                <span>{{ event.participant }}</span>
-                                {% if event.type == 'pilates' %}
-                                    <span>({{ event.participants }}/{{ event.max_participants }})</span>
+                            <div class="event {{ event.category }}">
+                                <strong>{{ event.category }}</strong>
+                                <span>{{ event.startDateTime.format('H:i:s') }} - {{ event.endDateTime.format('H:i:s') }}</span>
+                                {#<span>{{ event.professionals.getFirst().firstName }}</span>#}
+                                {% if event.category == 'pilates' %}
+                                    <span>({{ event.clients.count() }}/{{ event.capacity }})</span>
                                 {% endif %}
                             </div>
                         {% endfor %}
