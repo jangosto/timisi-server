@@ -12,9 +12,9 @@ use Infrastructure\Service\CalendarService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-class CalendarController extends QueryBusController
+class EditSessionController extends QueryBusController
 {
-    #[Route('/manager/calendar', name: 'calendar')]
+    #[Route('/manager/session/{session_id}/', name: 'edit_session_form', methods: ['GET'])]
     public function index(): Response
     {
         $sessions = $this->ask(
@@ -72,6 +72,6 @@ class CalendarController extends QueryBusController
             ),
         ];
 
-        return $this->render('manager/calendar.html.twig', $calendarData);
+        return $this->render('manager/calendar_by_month.html.twig', $calendarData);
     }
 }

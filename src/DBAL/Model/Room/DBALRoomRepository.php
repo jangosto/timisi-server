@@ -101,8 +101,8 @@ class DBALRoomRepository implements RoomRepository
     private function roomToArray(Room $room): array
     {
         return [
-            'name' => $room->name,
-            'capacity' => $room->capacity,
+            'name' => \strval($room->name),
+            'capacity' => \intval($room->capacity),
             'created_at' => $room->createdAt->format(self::DATE_TIME_FORMAT),
             'updated_at' => $room->updatedAt->format(self::DATE_TIME_FORMAT),
             'deleted_at' => $room->deletedAt ? $room->deletedAt->format(self::DATE_TIME_FORMAT) : null,
@@ -112,9 +112,9 @@ class DBALRoomRepository implements RoomRepository
     private function arrayToRoom(array $data): Room
     {
         $room = new Room();
-        $room->id = $data['id'];
-        $room->name = $data['name'];
-        $room->capacity = $data['capacity'];
+        $room->id = \strval($data['id']);
+        $room->name = \strval($data['name']);
+        $room->capacity = \intval($data['capacity']);
         $room->createdAt = new \DateTimeImmutable($data['created_at']);
         $room->updatedAt = new \DateTimeImmutable($data['updated_at']);
         $room->deletedAt = $data['deleted_at'] ? new \DateTimeImmutable($data['deleted_at']) : null;

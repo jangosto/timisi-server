@@ -7,7 +7,7 @@ namespace Domain\Service\Hydrator\Session;
 use Domain\Model\Session\SessionHydrationCriteria;
 use Domain\Model\Session\Sessions;
 
-class SessionHydrator
+class SessionHydratorCollection
 {
     public function __construct(
         private readonly array $hydrators,

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Infrastructure\Service;
+namespace Infrastructure\Service\Calendar;
 
 use Domain\Model\Session\Sessions;
 
 class CalendarService
 {
-    public static function getCalendarDataByMonth(
+    public function getCalendarDataByMonth(
         ?int $month = null,
         ?int $year = null,
         ?Sessions $sessions = null,
@@ -72,5 +72,40 @@ class CalendarService
         }
 
         return $calendar;
+    }
+
+    public function getMonthName(int $monthNumber, string $locale = 'es_ES'): string
+    {
+        $monthNames = [
+            'es_ES' => [
+                1 => 'Enero',
+                2 => 'Febrero',
+                3 => 'Marzo',
+                4 => 'Abril',
+                5 => 'Mayo',
+                6 => 'Junio',
+                7 => 'Julio',
+                8 => 'Agosto',
+                9 => 'Septiembre',
+                10 => 'Octubre',
+                11 => 'Noviembre',
+                12 => 'Diciembre',
+            ],
+        ];
+
+        return $monthNames[$locale][$monthNumber];
+    }
+
+    public function getFirstDayOfMonth(int $month, int $year): \DateTimeImmutable
+    {
+        return new \DateTimeImmutable("$year-$month-01 00:00:00");
+    }
+
+    public function getLastDayOfMonth(int $month, int $year): \DateTimeImmutable
+    {
+        $date = new \DateTimeImmutable("$year-$month-01");
+        $lastDay = $date->modify('last day of this month')->setTime(23, 59, 59);
+
+        return $lastDay;
     }
 }

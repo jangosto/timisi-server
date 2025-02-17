@@ -6,8 +6,10 @@ namespace Domain\Service\Hydrator\Session;
 
 use Domain\Model\Collection;
 use Domain\Model\HydrationCriteria;
+use Domain\Model\Room\Room;
 use Domain\Model\Room\RoomCriteria;
 use Domain\Model\Room\RoomRepository;
+use Domain\Model\Session\Room as SessionRoom;
 use Domain\Model\Session\SessionHydrationCriteria;
 use Domain\Service\Hydrator\Hydrator;
 
@@ -30,8 +32,20 @@ class SessionRoomHydrator implements Hydrator
         )->indexedById();
 
         foreach ($collection->toArray() as $session) {
-            $session->room = $rooms[$session->roomId];
+            if (!\is_null($session->roomId)) {
+                $session->room = $this->roomTosessionRoom($rooms[$session->roomId]);
+            }
         }
+    }
+
+    private function roomToSessionRoom(Room $room): SessionRoom
+    {
+        $sessionRoom = new SessionRoom();
+        $sessionRoom->id = $room->id;
+        $sessionRoom->name = $room->name;
+        $sessionRoom->capacity = $room->capacity;
+
+        return $sessionRoom;
     }
 
     public function supports(HydrationCriteria $criteria): bool

@@ -12,7 +12,7 @@ use Domain\Model\User\UserCriteria;
 use Domain\Model\User\UserNotFoundException;
 use Domain\Model\User\UserRepository;
 use Domain\Model\User\Users;
-use Infrastructure\Service\UserService;
+use Infrastructure\Service\User\UserService;
 
 class DBALUserRepository implements UserRepository
 {
@@ -188,27 +188,33 @@ class DBALUserRepository implements UserRepository
 
     private function userToArray(User $user): array
     {
-        return [
-            'username' => $user->username,
-            'password' => $user->password,
-            'first_name' => $user->firstName,
-            'last_name' => $user->lastName,
-            'id_number' => $user->idNumber,
+        $data = [
+            'username' => \strval($user->username),
+            'password' => \strval($user->password),
+            'first_name' => \strval($user->firstName),
+            'last_name' => \strval($user->lastName),
+            'id_number' => \strval($user->idNumber),
             'created_at' => $user->createdAt->format(self::DATE_TIME_FORMAT),
             'updated_at' => $user->updatedAt->format(self::DATE_TIME_FORMAT),
             'deleted_at' => $user->deletedAt ? $user->deletedAt->format(self::DATE_TIME_FORMAT) : null,
         ];
+
+        if (!\is_null($user->id)) {
+            $data['id'] = \intval($user->id);
+        }
+
+        return $data;
     }
 
     private function arrayToUser(array $data): User
     {
         $user = new User();
-        $user->id = $data['id'];
-        $user->username = $data['username'];
-        $user->password = $data['password'];
-        $user->firstName = $data['first_name'];
-        $user->lastName = $data['last_name'];
-        $user->idNumber = $data['id_number'];
+        $user->id = \strval($data['id']);
+        $user->username = \strval($data['username']);
+        $user->password = \strval($data['password']);
+        $user->firstName = \strval($data['first_name']);
+        $user->lastName = \strval($data['last_name']);
+        $user->idNumber = \strval($data['id_number']);
         $user->createdAt = new \DateTimeImmutable($data['created_at']);
         $user->updatedAt = new \DateTimeImmutable($data['updated_at']);
         $user->deletedAt = $data['deleted_at'] ? new \DateTimeImmutable($data['deleted_at']) : null;

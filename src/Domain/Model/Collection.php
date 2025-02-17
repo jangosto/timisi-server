@@ -17,7 +17,7 @@ abstract class Collection extends ArrayCollection
     {
         $indexed = [];
         foreach ($this as $element) {
-            $indexed[$element->id()] = $element;
+            $indexed[$element->id] = $element;
         }
 
         return $indexed;

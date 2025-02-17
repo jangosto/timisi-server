@@ -26,7 +26,10 @@ services:
         resource: '../src/Http/Controller/'
         tags: [ 'controller.service_arguments' ]
 
-    Infrastructure\Service\UserService:
+    ### SERVICES ###
+    Infrastructure\Service\User\UserService:
+    Infrastructure\Service\Calendar\CalendarService:
+    Infrastructure\Service\Menu\MenuService:
 
     Infrastructure\Security\Provider\UserProvider:
     Infrastructure\Security\Handler\ManagerJwtFailureHandler:
@@ -64,3 +67,12 @@ services:
         tags:
             - { name: "tactician.handler", typehints: true }
 
+    ### HYDRATORS ###
+    Domain\Service\Hydrator\Session\SessionProfessionalsHydrator:
+    Domain\Service\Hydrator\Session\SessionClientsHydrator:
+    Domain\Service\Hydrator\Session\SessionRoomHydrator:
+    Domain\Service\Hydrator\Session\SessionHydratorCollection:
+        -
+            - '@Domain\Service\Hydrator\Session\SessionProfessionalsHydrator'
+            - '@Domain\Service\Hydrator\Session\SessionClientsHydrator'
+            - '@Domain\Service\Hydrator\Session\SessionRoomHydrator'

@@ -103,9 +103,9 @@ body {
 <div class="main-container">
     <div class="sidebar col-2">
         <ul>
-            {% for section in sections %}
-                <li class="{% if section.name == section_name %}active{% endif %}">
-                    <a href="{{ section.url }}">
+            {% for section in menu.sections %}
+                <li class="{% if section.active %}active{% endif %}">
+                    <a href="{{ path(section.route) }}">
                         <i class="fas fa-{{ section.icon }}"></i> {{ section.name }}
                     </a>
                 </li>

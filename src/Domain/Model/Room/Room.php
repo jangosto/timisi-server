@@ -10,4 +10,5 @@ class Room extends BaseModel
 {
     public string $name;
     public int $capacity;
+    public ?string $roomId = null;
 }

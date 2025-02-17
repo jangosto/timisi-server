@@ -25,6 +25,7 @@ final class Version20250211CreateSessionAndRoomTablesAlterUserTable extends Abst
             `vat_percentage` DECIMAL(5, 2) NOT NULL,
             `category` VARCHAR(255) NOT NULL,
             `capacity` INT NOT NULL,
+            `room_id` BIGINT UNSIGNED DEFAULT NULL,
             `created_at` DATETIME NOT NULL,
             `updated_at` DATETIME NOT NULL,
             `deleted_at` DATETIME DEFAULT NULL,

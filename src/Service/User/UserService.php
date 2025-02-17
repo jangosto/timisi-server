@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Infrastructure\Service;
+namespace Infrastructure\Service\User;
 
 use Domain\Model\User\User;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
