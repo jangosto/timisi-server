@@ -71,6 +71,6 @@ class GetCalendarMonthController extends QueryBusController
             ),
         ];
 
-        return $this->render('manager/calendar_month.html.twig', $calendarData);
+        return $this->render('manager/full_calendar.html.twig', $calendarData);
     }
 }

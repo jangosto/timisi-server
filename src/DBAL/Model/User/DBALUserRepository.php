@@ -252,5 +252,12 @@ class DBALUserRepository implements UserRepository
             $queryBuilder->andWhere('u.username = :username')
                 ->setParameter('username', $criteria->getUsername());
         }
+
+        if (!empty($criteria->getRole())) {
+            $queryBuilder->leftJoin('u', $this->userRoleTableName, 'ur', 'u.id = ur.user_id')
+                ->leftJoin('ur', $this->roleTableName, 'r', 'ur.role_id = r.id')
+                ->andWhere('r.role = :role')
+                ->setParameter('role', $criteria->getRole());
+        }
     }
 }

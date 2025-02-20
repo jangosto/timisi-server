@@ -7,7 +7,9 @@ namespace Infrastructure\Http\Controller\Manager;
 use Domain\Model\DateTimeRange;
 use Domain\Model\Session\SessionCriteria;
 use Domain\Model\Session\SessionHydrationCriteria;
+use Domain\Model\User\UserCriteria;
 use Domain\Query\GetSessionsQuery;
+use Domain\Query\GetUsersQuery;
 use Domain\Service\Hydrator\Session\SessionHydratorCollection;
 use Infrastructure\Http\QueryBusController;
 use Infrastructure\Service\Calendar\CalendarService;
@@ -44,6 +46,11 @@ class GetCalendarDayController extends QueryBusController
             $startDateTime = $calentarDayDate->setTime(0, 0, 0);
             $endDateTime = $calentarDayDate->setTime(23, 59, 59);
 
+            $professionals = $this->ask(new GetUsersQuery(
+                UserCriteria::createEmpty()
+                    ->filterByRole('ROLE_MANAGER')
+            ));
+
             $sessions = $this->ask(new GetSessionsQuery(
                 SessionCriteria::createEmpty()
                     ->filterByStartDateTime(
@@ -59,7 +66,18 @@ class GetCalendarDayController extends QueryBusController
                 $sessions
             );
 
-            $this->calendarService->getSocketOrderedData($sessions);
+            $sessionsIndexedByUserId = [];
+            foreach ($professionals as $professional) {
+                $sessionsIndexedByUserId[$professional->id] = [];
+            }
+
+            foreach ($sessions as $session) {
+                foreach ($session->professionals as $professional) {
+                    $sessionsIndexedByUserId[$professional->id][] = $session;
+                }
+            }
+
+            $this->createProfessionalSlotsArray($sessionsIndexedByUserId, $startDateTime);
 
             return $this->render('manager/calendar_day.html.twig', [
                 'client_name' => 'Bambú Fisioterapia',
@@ -76,5 +94,29 @@ class GetCalendarDayController extends QueryBusController
             // En caso de error en el formato de fecha, redirigir al día actual
             return $this->redirectToRoute('get_calendar_day');
         }
+    }
+
+    private function createProfessionalSlotsArray(array $data, \DateTimeImmutable $startDateTime): array
+    {
+        $dateWalker = new \DateTime($startDateTime->format('Y-m-d H:i:s'));
+
+        while ($startDateTime->format('d') === $dateWalker->format('d')) {
+            $slots = [];
+            foreach ($data as $userId => $sessions) {
+                $slots[$userId] = [];
+                foreach ($sessions as $session) {
+                    if (
+                        $session->startDateTime >= $dateWalker
+                        && $session->endDateTime <= $dateWalker
+                    ) {
+                        $slots[$userId][] = $session;
+                    }
+                }
+            }
+
+            $dateWalker->modify('+15 minutes');
+        }
+
+        return $slots;
     }
 }

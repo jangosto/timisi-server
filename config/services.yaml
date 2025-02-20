@@ -31,6 +31,7 @@ services:
     Infrastructure\Service\Calendar\CalendarService:
     Infrastructure\Service\Menu\MenuService:
 
+    ### SECURITY ###
     Infrastructure\Security\Provider\UserProvider:
     Infrastructure\Security\Handler\ManagerJwtFailureHandler:
 

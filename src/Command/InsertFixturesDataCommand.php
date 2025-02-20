@@ -108,7 +108,7 @@ class InsertFixturesDataCommand extends Command
             }
 
             // Create 20 Physiotherapy sessions
-            for ($i = 1; $i <= 20; ++$i) {
+            for ($i = 1; $i <= 100; ++$i) {
                 $day = str_pad(\strval(rand(1, 28)), 2, '0', STR_PAD_LEFT);
                 $hour = str_pad(\strval(rand(9, 17)), 2, '0', STR_PAD_LEFT);
 
@@ -130,8 +130,12 @@ class InsertFixturesDataCommand extends Command
 
             // Create 3 Pilates sessions
             $pilatesSchedule = [
+                '2025-02-07 13:00:00',
+                '2025-02-12 10:00:00',
+                '2025-02-16 17:00:00',
                 '2025-02-19 10:00:00',
                 '2025-02-21 16:00:00',
+                '2025-02-24 15:00:00',
                 '2025-02-28 11:00:00',
             ];
 
@@ -169,7 +173,7 @@ class InsertFixturesDataCommand extends Command
 
             // Add both managers
             $workshopSession->professionalIds = array_map(
-                fn ($key) => $userIds[$key],
+                fn ($key) => $managerIds[$key],
                 array_rand($managerIds, 2)
             );
 

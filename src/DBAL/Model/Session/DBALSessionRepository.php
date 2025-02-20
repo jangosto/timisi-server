@@ -218,7 +218,8 @@ class DBALSessionRepository implements SessionRepository
             ->createQueryBuilder()
             ->select('s.*')
             ->from($this->sessionTableName, 's')
-            ->where('s.deleted_at IS NULL');
+            ->where('s.deleted_at IS NULL')
+            ->orderBy('s.start_datetime', 'ASC');
 
         $this->applySessionCriteriaFilters($criteria, $queryBuilder);
 
