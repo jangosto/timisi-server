@@ -9,3 +9,9 @@ manager:
         path: ../src/Http/Controller/Manager
         namespace: Infrastructure\Http\Controller\Manager
     type: attribute
+
+api:
+    resource:
+        path: ../src/Http/Controller/Api
+        namespace: Infrastructure\Http\Controller\Api
+    type: attribute

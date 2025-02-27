@@ -270,5 +270,11 @@ class DBALSessionRepository implements SessionRepository
                 ->andWhere('ps.user_id = :professional_id')
                 ->setParameter('professional_id', $criteria->getProfessionalId());
         }
+
+        if (!empty($criteria->getClientId())) {
+            $queryBuilder->leftJoin('s', $this->clientSessionTableName, 'cs', 's.id = cs.session_id')
+                ->andWhere('cs.user_id = :client_id')
+                ->setParameter('client_id', $criteria->getClientId());
+        }
     }
 }

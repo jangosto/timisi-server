@@ -77,3 +77,7 @@ services:
             - '@Domain\Service\Hydrator\Session\SessionProfessionalsHydrator'
             - '@Domain\Service\Hydrator\Session\SessionClientsHydrator'
             - '@Domain\Service\Hydrator\Session\SessionRoomHydrator'
+
+    ### TWIG EXTENSIONS ###
+    Infrastructure\Service\Twig\Extension\ColorExtension:
+        tags: [twig.extension]

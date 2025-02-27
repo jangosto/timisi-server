@@ -13,6 +13,7 @@ class SessionCriteria extends Criteria
     private ?DateTimeRange $endDateTime = null;
     private ?string $roomId = null;
     private ?string $professionalId = null;
+    private ?string $clientId = null;
 
     public function filterByStartDateTime(DateTimeRange $startDateTime): self
     {
@@ -42,6 +43,13 @@ class SessionCriteria extends Criteria
         return $this;
     }
 
+    public function filterByClientId(string $clientId): self
+    {
+        $this->clientId = $clientId;
+
+        return $this;
+    }
+
     public function getStartDateTime(): ?DateTimeRange
     {
         return $this->startDateTime;
@@ -60,5 +68,10 @@ class SessionCriteria extends Criteria
     public function getProfessionalId(): ?string
     {
         return $this->professionalId;
+    }
+
+    public function getClientId(): ?string
+    {
+        return $this->clientId;
     }
 }

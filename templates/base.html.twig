@@ -34,25 +34,29 @@
         .offset-11 { margin-left: 91.66%; }
 
         :root {
-            --primary-color:#a9d65f;
-            --secondary-color: color-mix(in srgb, var(--primary-color) 80%, white 20%);
-            --accent-color: color-mix(in srgb, var(--primary-color) 60%, black 40%);
-            --background-color: color-mix(in srgb, var(--primary-color) 15%, white 85%);
+            --primary-color: {{ primaryColor }};
+            --secondary-color: {{ primaryColor | mix_color("#FFFFFF", 80) }};
+            --accent-color: {{ primaryColor | mix_color("#000000", 60) }};
+            --background-color: {{ primaryColor | mix_color("#FFFFFF", 15) }};
             --text-color: #333;
-            --border-radius: 8px;
+            --border-radius: {{ borderRadius }};
+            --border-color: {{ borderColor }};
+            --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            background-color: var(--background-color);
         }
 
         *, *::before, *::after {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 400px;
-            background: white;
-            padding: 2rem;
-            border-radius: var(--border-radius);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
         .btn {

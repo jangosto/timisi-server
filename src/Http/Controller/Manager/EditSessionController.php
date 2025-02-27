@@ -7,7 +7,7 @@ namespace Infrastructure\Http\Controller\Manager;
 use Domain\Model\DateTimeRange;
 use Domain\Model\Session\SessionCriteria;
 use Domain\Query\GetSessionsQuery;
-use Infrastructure\Http\QueryBusController;
+use Infrastructure\Http\Controller\QueryBusController;
 use Infrastructure\Service\CalendarService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

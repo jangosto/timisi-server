@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class DashboardController extends AbstractController
 {
-    #[Route('/manager/calendar', name: 'manager_calendar')]
+    #[Route('/manager/dashboard/', name: 'manager_dashboard')]
     public function index(): Response
     {
         return $this->render('manager/dashboard.html.twig', [
