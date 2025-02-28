@@ -7,7 +7,7 @@ namespace Infrastructure\Http\Controller\Api;
 use Domain\Query\GetSessionsQuery;
 use Infrastructure\Http\Controller\QueryBusController;
 use Infrastructure\Http\CriteriaTransformer\SessionCriteriaTransformer;
-use Infrastructure\Http\Transformer\SessionsTranformer;
+use Infrastructure\Http\Transformer\SessionsTransformer;
 use Infrastructure\Http\Transformer\Validator\ConstraintViolationErrorsTransformer;
 use Infrastructure\Http\ValidatorDTO\GetSessionsRequestDTO;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,7 +41,7 @@ class GetSessionsController extends QueryBusController
         ));
 
         return new Response(
-            json_encode(SessionsTranformer::sessionsToArray($sessions)),
+            json_encode(SessionsTransformer::sessionsToArray($sessions)),
             Response::HTTP_OK
         );
     }

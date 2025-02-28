@@ -7,7 +7,7 @@ namespace Infrastructure\Http\Transformer;
 use Domain\Model\Session\Session;
 use Domain\Model\Session\Sessions;
 
-class SessionsTranformer implements TransformerInterface
+class SessionsTransformer implements TransformerInterface
 {
     public static function sessionsToArray(Sessions $sessions): array
     {
