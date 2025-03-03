@@ -9,300 +9,105 @@
 
 {% block section_content %}
 <div class="col-10">
-    <div id="calendar-title">28 de Febrero de 2025</div>
-    <div id="calendar"></div>
+    <div id="calendar-prev-day-arrow" class="col-1 left-arrow-container"><</div><div id="calendar-title" class="col-10" data-date="{{ date|date('Y-m-d') }}"></div><div id="calendar-next-day-arrow" class="col-1 right-arrow-container">></div>
+    <div id="calendar" class="col-12"></div>
 </div>
 <div class="col-4"></div>
 {% endblock %}
 
 {% block scripts %}
 <script>
-    const config = {
-        persons: [
-            { id: 1, name: "Juan", color: "#4CAF50" },
-            { id: 2, name: "María", color: "#2196F3" },
-            { id: 3, name: "Carlos", color: "#F44336" },
-            { id: 4, name: "Fran", color: "#d68910" }
-        ],
-        events: [
-            // Eventos para Juan (personId: 1)
-            {
-                name: "Evento 1 - Juan",
-                startDate: new Date(2025, 1, 28, 8, 0),
-                endDate: new Date(2025, 1, 28, 9, 0),
-                personId: 1,
-                type: "appointment",
-                patientName: "Carlos Mendoza"
-            },
-            {
-                name: "Evento 2 - Juan",
-                startDate: new Date(2025, 1, 28, 9, 5),
-                endDate: new Date(2025, 1, 28, 10, 5),
-                personId: 1,
-                type: "appointment",
-                patientName: "Elena Ruiz"
-            },
-            {
-                name: "Evento 3 - Juan",
-                startDate: new Date(2025, 1, 28, 10, 10),
-                endDate: new Date(2025, 1, 28, 11, 10),
-                personId: 1,
-                type: "appointment",
-                patientName: "Miguel Sánchez"
-            },
-            {
-                name: "Evento 4 - Juan",
-                startDate: new Date(2025, 1, 28, 11, 15),
-                endDate: new Date(2025, 1, 28, 12, 15),
-                personId: 1,
-                type: "group", // Único evento de tipo group para Juan
-                patientName: "Sofía López"
-            },
-            {
-                name: "Evento 5 - Juan",
-                startDate: new Date(2025, 1, 28, 14, 0),
-                endDate: new Date(2025, 1, 28, 15, 0),
-                personId: 1,
-                type: "appointment",
-                patientName: "Diego Morales"
-            },
-            {
-                name: "Evento 6 - Juan",
-                startDate: new Date(2025, 1, 28, 15, 5),
-                endDate: new Date(2025, 1, 28, 16, 5),
-                personId: 1,
-                type: "appointment",
-                patientName: "Laura Vega"
-            },
-            {
-                name: "Evento 7 - Juan",
-                startDate: new Date(2025, 1, 28, 16, 10),
-                endDate: new Date(2025, 1, 28, 17, 10),
-                personId: 1,
-                type: "appointment",
-                patientName: "Jorge Hernández"
-            },
-            {
-                name: "Evento 8 - Juan",
-                startDate: new Date(2025, 1, 28, 17, 15),
-                endDate: new Date(2025, 1, 28, 18, 15),
-                personId: 1,
-                type: "appointment",
-                patientName: "Marta Ramírez"
-            },
+    document.addEventListener('DOMContentLoaded', function() {
+        const calendarTitle = document.getElementById('calendar-title');
+        const leftArrow = document.querySelector('.left-arrow-container');
+        const rightArrow = document.querySelector('.right-arrow-container');
 
-            // Eventos para María (personId: 2)
-            {
-                name: "Evento 1 - María",
-                startDate: new Date(2025, 1, 28, 8, 10),
-                endDate: new Date(2025, 1, 28, 9, 10),
-                personId: 2,
-                type: "appointment",
-                patientName: "Ana Torres"
-            },
-            {
-                name: "Evento 2 - María",
-                startDate: new Date(2025, 1, 28, 9, 15),
-                endDate: new Date(2025, 1, 28, 10, 15),
-                personId: 2,
-                type: "appointment",
-                patientName: "Luis García"
-            },
-            {
-                name: "Evento 3 - María",
-                startDate: new Date(2025, 1, 28, 10, 20),
-                endDate: new Date(2025, 1, 28, 11, 20),
-                personId: 2,
-                type: "appointment",
-                patientName: "Clara Domínguez"
-            },
-            {
-                name: "Evento 4 - María",
-                startDate: new Date(2025, 1, 28, 11, 25),
-                endDate: new Date(2025, 1, 28, 12, 25),
-                personId: 2,
-                type: "group", // Único evento de tipo group para María
-                patientName: "Roberto Fernández"
-            },
-            {
-                name: "Evento 5 - María",
-                startDate: new Date(2025, 1, 28, 14, 0),
-                endDate: new Date(2025, 1, 28, 15, 0),
-                personId: 2,
-                type: "appointment",
-                patientName: "Patricia López"
-            },
-            {
-                name: "Evento 6 - María",
-                startDate: new Date(2025, 1, 28, 15, 5),
-                endDate: new Date(2025, 1, 28, 16, 5),
-                personId: 2,
-                type: "appointment",
-                patientName: "Fernando Ruiz"
-            },
-            {
-                name: "Evento 7 - María",
-                startDate: new Date(2025, 1, 28, 16, 10),
-                endDate: new Date(2025, 1, 28, 17, 10),
-                personId: 2,
-                type: "appointment",
-                patientName: "Sergio Morales"
-            },
-            {
-                name: "Evento 8 - María",
-                startDate: new Date(2025, 1, 28, 17, 15),
-                endDate: new Date(2025, 1, 28, 18, 15),
-                personId: 2,
-                type: "appointment",
-                patientName: "Lucía Sánchez"
-            },
+        const currentDate = new Date(calendarTitle.dataset.date);
 
-            // Eventos para Carlos (personId: 3) - Todos appointment
-            {
-                name: "Evento 1 - Carlos",
-                startDate: new Date(2025, 1, 28, 8, 0),
-                endDate: new Date(2025, 1, 28, 9, 0),
-                personId: 3,
-                type: "appointment",
-                patientName: "Esteban Ruiz"
-            },
-            {
-                name: "Evento 2 - Carlos",
-                startDate: new Date(2025, 1, 28, 9, 5),
-                endDate: new Date(2025, 1, 28, 10, 5),
-                personId: 3,
-                type: "appointment",
-                patientName: "Carla Mendoza"
-            },
-            {
-                name: "Evento 3 - Carlos",
-                startDate: new Date(2025, 1, 28, 10, 10),
-                endDate: new Date(2025, 1, 28, 11, 10),
-                personId: 3,
-                type: "appointment",
-                patientName: "Diego Márquez"
-            },
-            {
-                name: "Evento 4 - Carlos",
-                startDate: new Date(2025, 1, 28, 11, 15),
-                endDate: new Date(2025, 1, 28, 12, 15),
-                personId: 3,
-                type: "appointment",
-                patientName: "Inés Guerrero"
-            },
-            {
-                name: "Evento 5 - Carlos",
-                startDate: new Date(2025, 1, 28, 14, 0),
-                endDate: new Date(2025, 1, 28, 15, 0),
-                personId: 3,
-                type: "appointment",
-                patientName: "Alberto Morales"
-            },
-            {
-                name: "Evento 6 - Carlos",
-                startDate: new Date(2025, 1, 28, 15, 5),
-                endDate: new Date(2025, 1, 28, 16, 5),
-                personId: 3,
-                type: "appointment",
-                patientName: "Sofía Delgado"
-            },
-            {
-                name: "Evento 7 - Carlos",
-                startDate: new Date(2025, 1, 28, 16, 10),
-                endDate: new Date(2025, 1, 28, 17, 10),
-                personId: 3,
-                type: "appointment",
-                patientName: "Mario López"
-            },
-            {
-                name: "Evento 8 - Carlos",
-                startDate: new Date(2025, 1, 28, 17, 15),
-                endDate: new Date(2025, 1, 28, 18, 15),
-                personId: 3,
-                type: "appointment",
-                patientName: "Teresa Jiménez"
-            },
+        calendarTitle.textContent = currentDate.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-            // Eventos para Fran (personId: 4) - Todos appointment
-            {
-                name: "Evento 1 - Fran",
-                startDate: new Date(2025, 1, 28, 8, 5),
-                endDate: new Date(2025, 1, 28, 9, 5),
-                personId: 4,
-                type: "appointment",
-                patientName: "Ricardo Flores"
-            },
-            {
-                name: "Evento 2 - Fran",
-                startDate: new Date(2025, 1, 28, 9, 10),
-                endDate: new Date(2025, 1, 28, 10, 10),
-                personId: 4,
-                type: "appointment",
-                patientName: "Isabel Romero"
-            },
-            {
-                name: "Evento 3 - Fran",
-                startDate: new Date(2025, 1, 28, 10, 15),
-                endDate: new Date(2025, 1, 28, 11, 15),
-                personId: 4,
-                type: "appointment",
-                patientName: "Julio Castillo"
-            },
-            {
-                name: "Evento 4 - Fran",
-                startDate: new Date(2025, 1, 28, 11, 20),
-                endDate: new Date(2025, 1, 28, 12, 20),
-                personId: 4,
-                type: "appointment",
-                patientName: "Carmen Serrano"
-            },
-            {
-                name: "Evento 5 - Fran",
-                startDate: new Date(2025, 1, 28, 14, 0),
-                endDate: new Date(2025, 1, 28, 15, 0),
-                personId: 4,
-                type: "appointment",
-                patientName: "Fernando Ríos"
-            },
-            {
-                name: "Evento 6 - Fran",
-                startDate: new Date(2025, 1, 28, 15, 5),
-                endDate: new Date(2025, 1, 28, 16, 5),
-                personId: 4,
-                type: "appointment",
-                patientName: "Silvia Navarro"
-            },
-            {
-                name: "Evento 7 - Fran",
-                startDate: new Date(2025, 1, 28, 16, 10),
-                endDate: new Date(2025, 1, 28, 17, 10),
-                personId: 4,
-                type: "appointment",
-                patientName: "Óscar Gutiérrez"
-            },
-            {
-                name: "Evento 8 - Fran",
-                startDate: new Date(2025, 1, 28, 17, 15),
-                endDate: new Date(2025, 1, 28, 18, 15),
-                personId: 4,
-                type: "appointment",
-                patientName: "Verónica Peña"
-            }
-        ],
-        timeRange: {
-            start: 8,
-            end: 21
-        },
-        gridSize: 15,
-        theme: {
-            backgroundColor: '{{ primaryColor | mix_color("#FFFFFF", 15) }}',
-            borderRadius: '{{ borderRadius }}',
-            borderColor: '{{ borderColor }}'
+        function getEventsFromData(data) {
+            return data.map(event => {
+                return {
+                    name: event.name,
+                    startDate: new Date(event.startDateTime),
+                    endDate: new Date(event.endDateTime),
+                    personId: event.personId,
+                    type: event.type,
+                    patientName: event.patientName
+                };
+            });
         }
-    };
 
-    const calendar = new DailyCalendar('#calendar', config);
+        function getPersonsFromData(data) {
+            return data.map(event => {
+                return {
+                    id: event.personId,
+                    name: event.firstName,
+                    color: event.personColor
+                };
+            });
+        }
 
+        function updateCalendarView(date) {
+            fetch('{{ path("api_get_session") }}?startDateTimeFrom=' + date + ' 00:00:00&startDateTimeTo=' + date + ' 23:59:59&endDateTimeFrom=' + date + ' 00:00:00&endDateTimeTo=' + date + ' 23:59:59')
+                .then(response => response.json())
+                .then(data => {
+                    // Actualizar solo la sección del calendario
+                    calendarTitle.textContent = currentDate.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                    
+                    // Actualizar el calendario después de recibir los nuevos datos
+                    calendar.updateCalendar(getPersonsFromData(data), getEventsFromData(data));
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function navigateCalendar(action) {            
+            if (action === 'next') {
+                currentDate.setDate(currentDate.getDate() + 1);
+            } else {
+                currentDate.setDate(currentDate.getDate() - 1);
+            }
+
+            const newDate = currentDate.toISOString().split('T')[0];
+            updateCalendarView(newDate);
+        }
+
+        leftArrow.addEventListener('click', () => navigateCalendar('prev'));
+        rightArrow.addEventListener('click', () => navigateCalendar('next'));
+
+        const config = {
+            persons: [
+                { id: 1, name: "Juan", color: "#4CAF50" },
+                { id: 2, name: "María", color: "#2196F3" },
+                { id: 3, name: "Carlos", color: "#F44336" },
+                { id: 4, name: "Fran", color: "#d68910" }
+            ],
+            events: [
+                
+                {
+                    name: "Evento 8 - Fran",
+                    startDate: new Date(2025, 1, 28, 17, 15),
+                    endDate: new Date(2025, 1, 28, 18, 15),
+                    personId: 4,
+                    type: "appointment|group",
+                    patientName: "Verónica Peña"
+                }
+            ],
+            timeRange: {
+                start: 8,
+                end: 21
+            },
+            gridSize: 15,
+            theme: {
+                backgroundColor: '{{ primaryColor | mix_color("#FFFFFF", 15) }}',
+                borderRadius: '{{ borderRadius }}',
+                borderColor: '{{ borderColor }}'
+            }
+        };
+
+        const calendar = new DailyCalendar('#calendar', config);
+    });
 </script>
 {% endblock %}
 {% block styles %}
@@ -313,5 +118,14 @@
         font-weight: 500;
         margin-bottom: 1rem;
         justify-content: center;
+    }
+
+    .left-arrow-container, .right-arrow-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2rem;
+        font-weight: 500;
+        cursor: pointer;
     }
 {% endblock %}
