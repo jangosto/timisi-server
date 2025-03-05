@@ -23,30 +23,56 @@
         const rightArrow = document.querySelector('.right-arrow-container');
 
         const currentDate = new Date(calendarTitle.dataset.date);
+        personColors = [];
 
         calendarTitle.textContent = currentDate.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
         function getEventsFromData(data) {
-            return data.map(event => {
-                return {
-                    name: event.name,
-                    startDate: new Date(event.startDateTime),
-                    endDate: new Date(event.endDateTime),
-                    personId: event.personId,
-                    type: event.type,
-                    patientName: event.patientName
-                };
+            events = [];
+
+            data.forEach(event => {
+                event.professionalIds.forEach((professionalId) => {
+                    events.push({
+                        name: event.category + (event.clients.length > 1 ? '' : ': ' + event.clients[0].firstName),
+                        startDate: new Date(event.startDateTime),
+                        endDate: new Date(event.endDateTime),
+                        personId: professionalId,
+                        type: event.clients.length > 1 ? 'group' : 'appointment',
+                    });
+                });
             });
+
+            return events;
+            
         }
 
         function getPersonsFromData(data) {
-            return data.map(event => {
-                return {
-                    id: event.personId,
-                    name: event.firstName,
-                    color: event.personColor
-                };
+            if (data.length === 0) {
+                return [
+                    {
+                        id: 'no id',
+                        name: 'No hay eventos',
+                        color: '{{ primaryColor }}'
+                    }
+                ];
+            }
+
+            let persons = [];
+
+            data.forEach((event) => {
+                if (!persons.some(person => person.id === event.professionalIds[0])) {
+                    if (personColors[event.professionalIds[0]] === undefined) {
+                        personColors[event.professionalIds[0]] = generateCompatibleDarkColor('{{ primaryColor }}');
+                    }
+                    persons.push({
+                        id: event.professionalIds[0],
+                        name: event.professionals[0].firstName,
+                        color: personColors[event.professionalIds[0]]
+                    });
+                }
             });
+           
+            return persons.sort((a, b) => a.name.localeCompare(b.name));
         }
 
         function updateCalendarView(date) {
@@ -57,7 +83,7 @@
                     calendarTitle.textContent = currentDate.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
                     
                     // Actualizar el calendario después de recibir los nuevos datos
-                    calendar.updateCalendar(getPersonsFromData(data), getEventsFromData(data));
+                    calendar.updateCalendar(getPersonsFromData(data), getEventsFromData(data), currentDate);
                 })
                 .catch(error => console.error('Error:', error));
         }
@@ -65,7 +91,7 @@
         function navigateCalendar(action) {            
             if (action === 'next') {
                 currentDate.setDate(currentDate.getDate() + 1);
-            } else {
+            } else if (action === 'prev') {
                 currentDate.setDate(currentDate.getDate() - 1);
             }
 
@@ -73,40 +99,74 @@
             updateCalendarView(newDate);
         }
 
+        function generateCompatibleDarkColor(baseColor, contrastThreshold = 50, minLuminance = 60) {
+            // Convierte un color HEX a RGB
+            function hexToRgb(hex) {
+                let bigint = parseInt(hex.replace("#", ""), 16);
+                return {
+                    r: (bigint >> 16) & 255,
+                    g: (bigint >> 8) & 255,
+                    b: bigint & 255
+                };
+            }
+
+            // Convierte RGB a HEX
+            function rgbToHex(r, g, b) {
+                return `#${((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1)}`;
+            }
+
+            // Calcula la luminosidad relativa (perceptiva) de un color
+            function luminance(r, g, b) {
+                return 0.299 * r + 0.587 * g + 0.114 * b;
+            }
+
+            let baseRgb = hexToRgb(baseColor);
+            let baseLuminance = luminance(baseRgb.r, baseRgb.g, baseRgb.b);
+            let newColor;
+
+            do {
+                // Genera un color aleatorio oscuro
+                let randomRgb = {
+                    r: Math.floor(Math.random() * 100),  // Valores bajos generan colores más oscuros
+                    g: Math.floor(Math.random() * 100),
+                    b: Math.floor(Math.random() * 100)
+                };
+
+                // Calcula el brillo del color generado
+                let newLuminance = luminance(randomRgb.r, randomRgb.g, randomRgb.b);
+
+                // Asegura que el contraste con el color base sea suficiente y que sea lo bastante oscuro
+                if (Math.abs(newLuminance - baseLuminance) > contrastThreshold && newLuminance < minLuminance) {
+                    newColor = rgbToHex(randomRgb.r, randomRgb.g, randomRgb.b);
+                }
+            } while (!newColor);
+
+            return newColor;
+        }
+
         leftArrow.addEventListener('click', () => navigateCalendar('prev'));
         rightArrow.addEventListener('click', () => navigateCalendar('next'));
 
         const config = {
-            persons: [
-                { id: 1, name: "Juan", color: "#4CAF50" },
-                { id: 2, name: "María", color: "#2196F3" },
-                { id: 3, name: "Carlos", color: "#F44336" },
-                { id: 4, name: "Fran", color: "#d68910" }
-            ],
-            events: [
-                
-                {
-                    name: "Evento 8 - Fran",
-                    startDate: new Date(2025, 1, 28, 17, 15),
-                    endDate: new Date(2025, 1, 28, 18, 15),
-                    personId: 4,
-                    type: "appointment|group",
-                    patientName: "Verónica Peña"
-                }
-            ],
+            persons: [],
+            events: [],
             timeRange: {
                 start: 8,
-                end: 21
+                end: 24
             },
             gridSize: 15,
             theme: {
                 backgroundColor: '{{ primaryColor | mix_color("#FFFFFF", 15) }}',
                 borderRadius: '{{ borderRadius }}',
                 borderColor: '{{ borderColor }}'
-            }
+            },
+            date: currentDate,
+            showTimeIndicator: true,
         };
 
         const calendar = new DailyCalendar('#calendar', config);
+
+        navigateCalendar('');
     });
 </script>
 {% endblock %}
