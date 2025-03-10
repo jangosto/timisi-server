@@ -66,6 +66,7 @@ final class Version20250211CreateSessionAndRoomTablesAlterUserTable extends Abst
             ADD COLUMN `first_name` VARCHAR(255) NOT NULL,
             ADD COLUMN `last_name` VARCHAR(255) NOT NULL,
             ADD COLUMN `id_number` VARCHAR(50) NOT NULL,
+            ADD COLUMN `birth_date` DATE NULL,
             ADD CONSTRAINT `unique_id_number` UNIQUE (`id_number`)');
     }
 

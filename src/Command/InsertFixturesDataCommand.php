@@ -52,6 +52,17 @@ class InsertFixturesDataCommand extends Command
             $managerIds = [];
             $userIds = [];
 
+            $superManager = new User();
+            $superManager->username = 'raquel.sanlorenzo@gmail.com';
+            $superManager->password = 'password';
+            $superManager->firstName = 'Raquel';
+            $superManager->lastName = 'San Lorenzo';
+            $superManager->idNumber = '1234564879C';
+            $superManager->birthDate = new \DateTimeImmutable('1980-01-01');
+            $superManager->roles = ['ROLE_SUPER_MANAGER'];
+
+            $managerIds[] = $this->userRepository->create($superManager);
+
             // Create 2 managers
             $managerData = [
                 [
@@ -107,14 +118,14 @@ class InsertFixturesDataCommand extends Command
                 $userIds[] = $this->userRepository->create($user);
             }
 
-            // Create 20 Physiotherapy sessions
-            for ($i = 1; $i <= 100; ++$i) {
+            for ($i = 1; $i <= 5000; ++$i) {
+                $month = str_pad(\strval(rand(1, 12)), 2, '0', STR_PAD_LEFT);
                 $day = str_pad(\strval(rand(1, 28)), 2, '0', STR_PAD_LEFT);
                 $hour = str_pad(\strval(rand(9, 17)), 2, '0', STR_PAD_LEFT);
 
                 $physiotherapySession = new Session();
-                $physiotherapySession->startDateTime = new \DateTimeImmutable("2025-02-{$day} {$hour}:00:00");
-                $physiotherapySession->endDateTime = (new \DateTimeImmutable("2025-02-{$day} {$hour}:00:00"))->modify('+1 hour');
+                $physiotherapySession->startDateTime = new \DateTimeImmutable("2025-{$month}-{$day} {$hour}:00:00");
+                $physiotherapySession->endDateTime = (new \DateTimeImmutable("2025-{$month}-{$day} {$hour}:00:00"))->modify('+1 hour');
                 $physiotherapySession->priceWithVat = 50.00;
                 $physiotherapySession->vatPercentage = 21.00;
                 $physiotherapySession->category = 'fisioterapia';
@@ -130,13 +141,13 @@ class InsertFixturesDataCommand extends Command
 
             // Create 3 Pilates sessions
             $pilatesSchedule = [
-                '2025-02-07 13:00:00',
-                '2025-02-12 10:00:00',
-                '2025-02-16 17:00:00',
-                '2025-02-19 10:00:00',
-                '2025-02-21 16:00:00',
-                '2025-02-24 15:00:00',
-                '2025-02-28 11:00:00',
+                '2025-03-07 13:00:00',
+                '2025-03-12 10:00:00',
+                '2025-03-16 17:00:00',
+                '2025-03-19 10:00:00',
+                '2025-03-21 16:00:00',
+                '2025-03-24 15:00:00',
+                '2025-03-28 11:00:00',
             ];
 
             foreach ($pilatesSchedule as $dateTime) {
@@ -163,8 +174,8 @@ class InsertFixturesDataCommand extends Command
 
             // Create Workshop session
             $workshopSession = new Session();
-            $workshopSession->startDateTime = new \DateTimeImmutable('2025-02-21 15:00:00');
-            $workshopSession->endDateTime = new \DateTimeImmutable('2025-02-21 16:00:00');
+            $workshopSession->startDateTime = new \DateTimeImmutable('2025-03-21 15:00:00');
+            $workshopSession->endDateTime = new \DateTimeImmutable('2025-03-21 16:00:00');
             $workshopSession->priceWithVat = 30.00;
             $workshopSession->vatPercentage = 21.00;
             $workshopSession->category = 'charla';

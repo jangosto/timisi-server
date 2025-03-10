@@ -38,6 +38,7 @@
                         endDate: new Date(event.endDateTime),
                         personId: professionalId,
                         type: event.clients.length > 1 ? 'group' : 'appointment',
+                        url: '{{ path("edit_session", {sessionId: "*event.id*"}) }}'.replace('*event.id*', event.id)
                     });
                 });
             });
@@ -76,7 +77,7 @@
         }
 
         function updateCalendarView(date) {
-            fetch('{{ path("api_get_session") }}?startDateTimeFrom=' + date + ' 00:00:00&startDateTimeTo=' + date + ' 23:59:59&endDateTimeFrom=' + date + ' 00:00:00&endDateTimeTo=' + date + ' 23:59:59')
+            fetch('{{ path("api_get_sessions") }}?startDateTimeFrom=' + date + ' 00:00:00&startDateTimeTo=' + date + ' 23:59:59&endDateTimeFrom=' + date + ' 00:00:00&endDateTimeTo=' + date + ' 23:59:59')
                 .then(response => response.json())
                 .then(data => {
                     // Actualizar solo la sección del calendario
@@ -152,7 +153,7 @@
             events: [],
             timeRange: {
                 start: 8,
-                end: 24
+                end: 21
             },
             gridSize: 15,
             theme: {

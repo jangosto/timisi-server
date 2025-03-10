@@ -12,8 +12,8 @@ class SessionTransformer implements TransformerInterface
     {
         $data = [
             'id' => $session->id,
-            'startDateTime' => $session->startDateTime->format(self::DATE_FORMAT),
-            'endDateTime' => $session->endDateTime->format(self::DATE_FORMAT),
+            'startDateTime' => $session->startDateTime->format(self::DATE_TIME_FORMAT),
+            'endDateTime' => $session->endDateTime->format(self::DATE_TIME_FORMAT),
             'roomId' => $session->roomId,
             'professionalIds' => $session->professionalIds,
             'clientIds' => $session->clientIds,

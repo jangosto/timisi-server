@@ -30,6 +30,7 @@ class GetCalendarController extends QueryBusController
     #[Route(
         '/manager/calendar/',
         name: 'get_calendar',
+        methods: ['GET'],
         options: [
             'section_name' => 'Calendario',
             'section_icon' => 'calendar-alt',

@@ -19,7 +19,7 @@ class GetSessionsController extends QueryBusController
 {
     #[Route(
         '/api/session/',
-        name: 'api_get_session',
+        name: 'api_get_sessions',
         methods: ['GET']
     )]
     public function __invoke(Request $request, ValidatorInterface $validator): Response

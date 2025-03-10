@@ -184,7 +184,7 @@ class DBALSessionRepository implements SessionRepository
             'end_datetime' => $session->endDateTime->format(self::DATE_TIME_FORMAT),
             'price_with_vat' => \floatval($session->priceWithVat),
             'vat_percentage' => \floatval($session->vatPercentage),
-            'category' => \strval($session->category),
+            'category_id' => \intval($session->categoryId),
             'capacity' => \intval($session->capacity),
             'room_id' => $session->roomId ? \intval($session->roomId) : null,
             'created_at' => $session->createdAt->format(self::DATE_TIME_FORMAT),
@@ -201,7 +201,7 @@ class DBALSessionRepository implements SessionRepository
         $session->endDateTime = new \DateTimeImmutable($data['end_datetime']);
         $session->priceWithVat = \floatval($data['price_with_vat']);
         $session->vatPercentage = \floatval($data['vat_percentage']);
-        $session->category = \strval($data['category']);
+        $session->categoryId = \strval($data['category_id']);
         $session->capacity = \intval($data['capacity']);
         $session->roomId = $data['room_id'] ? \strval($data['room_id']) : null;
         $session->createdAt = new \DateTimeImmutable($data['created_at']);

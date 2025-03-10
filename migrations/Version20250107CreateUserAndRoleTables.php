@@ -50,6 +50,7 @@ final class Version20250107CreateUserAndRoleTables extends AbstractMigration
             ('Administrator', 'ROLE_ADMIN'),
             ('User', 'ROLE_USER'),
             ('Manager', 'ROLE_MANAGER'),
+            ('Super Manager', 'ROLE_SUPER_MANAGER'),
             ('Super Administrator', 'ROLE_SUPER_ADMIN')");
     }
 
